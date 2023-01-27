@@ -6,14 +6,14 @@ import java.util.Scanner;
 
 public class RangeMain {
     public static void main(String[] args) {
-        Range range1 = new Range(3, 12);
+        Range range1 = new Range(2, 6);
 
         System.out.printf("Длина диапазона от %.2f до %.2f: %.2f.%n", range1.getFrom(), range1.getTo(), range1.getLength());
 
         Range range2 = new Range(4, 8);
 
-        range2.setFrom(13);
-        range2.setTo(15);
+        range2.setFrom(4);
+        range2.setTo(9);
 
         System.out.printf("Длина диапазона от %.2f до %.2f: %.2f.%n%n", range2.getFrom(), range2.getTo(), range2.getLength());
 
@@ -49,7 +49,7 @@ public class RangeMain {
 
         Range[] range5 = range1.getDifference(range2);
 
-        if (range5 == null) {
+        if (range5.length == 0) {
             System.out.printf(".%n%nРазность диапазонов от %.2f до %.2f и от %.2f до %.2f - пустое множество.%n%n",
                     range1.getFrom(), range1.getTo(), range2.getFrom(), range2.getTo());
         } else {

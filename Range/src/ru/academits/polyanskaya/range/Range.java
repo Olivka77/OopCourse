@@ -34,76 +34,38 @@ public class Range {
     }
 
     public Range getIntersection(Range range) {
-        if (range.from == from && range.to == to) {
-            return range;
-        }
-
-        if (range.from < to && range.to > from || range.from > to && range.to < from) {
-            return new Range(Math.max(range.from, from), Math.min(range.to, to));
-        }
-
-        return null;
-    }
-
-    public Range[] getUnion(Range range) {
-        if (range.from == from && range.to == to) {
-            Range[] rangeArray = new Range[1];
-
-            rangeArray[0] = range;
-
-            return rangeArray;
-        }
-
-        if (range.from <= to && range.to >= from || range.from >= to && range.to <= from) {
-            Range[] rangeArray = new Range[1];
-
-            rangeArray[0] = new Range(Math.min(range.from, from), Math.max(range.to, to));
-
-            return rangeArray;
-        }
-
-        Range[] rangesArray = new Range[2];
-
-        rangesArray[0] = new Range(from, to);
-        rangesArray[1] = new Range(range.from, range.to);
-
-        return rangesArray;
-    }
-
-    public Range[] getDifference(Range range) {
-        if (range.from == from && range.to == to || from >= range.from && to <= range.to) {
+        if ((range.from >= to && range.to > from) || (range.from < to && range.to <= from)) {
             return null;
         }
 
-        if (from < range.to && to < range.from || from > range.to && to > range.from) {
-            Range[] rangeArray = new Range[1];
+        return new Range(Math.max(range.from, from), Math.min(range.to, to));
+    }
 
-            rangeArray[0] = new Range(from, to);
+    public Range[] getUnion(Range range) {
+        if ((range.from <= to && range.to >= from) || (range.from >= to && range.to <= from)) {
+            return new Range[]{new Range(Math.min(range.from, from), Math.max(range.to, to))};
+        }
 
-            return rangeArray;
+        return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+    }
+
+    public Range[] getDifference(Range range) {
+        if (from >= range.from && to <= range.to) {
+            return new Range[0];
+        }
+
+        if ((from < range.to && to < range.from) || (from > range.to && to > range.from)) {
+            return new Range[]{new Range(from, to)};
         }
 
         if (from < range.from && to > range.to) {
-            Range[] rangesArray = new Range[2];
-
-            rangesArray[0] = new Range(from, range.from);
-            rangesArray[1] = new Range(range.to, to);
-
-            return rangesArray;
+            return new Range[]{new Range(from, range.from), new Range(range.to, to)};
         }
 
         if (range.from <= from) {
-            Range[] rangeArray = new Range[1];
-
-            rangeArray[0] = new Range(range.to, to);
-
-            return rangeArray;
+            return new Range[]{new Range(range.to, to)};
         }
 
-        Range[] rangeArray = new Range[1];
-
-        rangeArray[0] = new Range(from, range.from);
-
-        return rangeArray;
+        return new Range[]{new Range(from, range.from)};
     }
 }

@@ -81,7 +81,7 @@ public class Vector {
         return components;
     }
 
-    public double[] subtract(Vector vector) {
+    public double[] subtractVector(Vector vector) {
         for (int i = 0; i < components.length; i++) {
             components[i] -= vector.components[i];
         }
@@ -89,15 +89,15 @@ public class Vector {
         return components;
     }
 
-    public double[] multiplyByScalar(Vector vector, double scalar) {
+    public double[] multiplyByScalar(double scalar) {
         for (int i = 0; i < components.length; i++) {
-            components[i] = vector.components[i] * scalar;
+            components[i] = components[i] * scalar;
         }
 
         return components;
     }
 
-    public double[] vectorReversal(Vector vector) {
+    public double[] vectorReversal() {
         for (int i = 0; i < components.length; i++) {
             components[i] *= -1;
         }
@@ -105,11 +105,15 @@ public class Vector {
         return components;
     }
 
-    public double getLength (Vector vector) {
-        return Math.sqrt(Math.pow(components[0], 2) + Math.pow(components[dimension-1], 2));
+    public double getLength() {
+        return Math.sqrt(Math.pow(components[0], 2) + Math.pow(components[dimension - 1], 2));
     }
 
-    public double getComponent (Vector vector, int index) {
+    public double getComponent(int index) {
+        return components[index];
+    }
 
+    public static Vector getSum(Vector vector) {
+        return new
     }
 }

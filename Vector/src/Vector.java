@@ -20,7 +20,7 @@ public class Vector {
     }
 
     public Vector(double[] components) {
-        this.components = components;
+        this.components = new double[]{components[dimension]};
     }
 
     public Vector(int dimension, double[] components) {
@@ -72,12 +72,25 @@ public class Vector {
         return string.toString();
     }
 
-    public double[] addVector(Vector vector) {
+    public Vector addVector(Vector vector) {
+        if (getSize() > vector.getSize()) {
+            // подумать про реализацию создания нового массива нужной длины или заполнения текущего
+            for (int i = 0; i < vector.getSize(); i++) {
+                components[i] = 0;
+            }
+        }
+
+        if (this.getSize() < getSize()) {
+            for (int i = vector.getSize(); i < this.getSize(); i++) {
+                vector.components[i] = 0;
+            }
+        }
+
         for (int i = 0; i < components.length; i++) {
             components[i] += vector.components[i];
         }
 
-        return components;
+        return vector;
     }
 
     public double[] subtractVector(Vector vector) {

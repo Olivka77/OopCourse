@@ -10,14 +10,13 @@ public class Vector {
         }
 
         this.dimension = dimension;
-        this.components = new double[dimension]; // обязательно ли тут this?
+        this.components = new double[dimension]; // проверить - обязательно ли тут this?
 
         Arrays.fill(components, 0);
     }
 
     public Vector(Vector copy) {
-        this.dimension = copy.dimension;
-        this.components = new double[dimension];
+        this(copy.getDimension(), copy.getComponents());
     }
 
     public Vector(double[] components) {
@@ -35,7 +34,7 @@ public class Vector {
         this.components = components;
     }
 
-    public double getDimension() {
+    public int getDimension() {
         return dimension;
     }
 
@@ -113,7 +112,32 @@ public class Vector {
         return components[index];
     }
 
+    @Override
+    public boolean equals(Object vector1) {
+        if (vector1 == this) {
+            return true;
+        }
+
+        if (vector1 == null || vector1.getClass() != getClass()) {
+            return false;
+        }
+
+        Vector vector2 = (Vector) vector1;
+
+        return dimension == vector2.dimension && Arrays.equals(components, vector2.components);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 11;
+        int hash = 1;
+        hash = prime * hash + Integer.hashCode(dimension);
+        hash = prime * hash + Arrays.hashCode(components);
+        return hash;
+    }
+
     public static Vector getSum(Vector vector) {
+        Vector newVector = new
         return new
     }
 }

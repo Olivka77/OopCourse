@@ -1,3 +1,5 @@
+package ru.academits.polyanskaya.vector;
+
 import java.util.Arrays;
 
 public class Vector {

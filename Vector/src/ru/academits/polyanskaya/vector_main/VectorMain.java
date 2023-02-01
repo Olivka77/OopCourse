@@ -1,4 +1,8 @@
-public class MainVector {
+package ru.academits.polyanskaya.vector_main;
+
+import ru.academits.polyanskaya.vector.Vector;
+
+public class VectorMain {
     public static void main(String[] args) {
         double[] components = {1, 0, 3.5, 4, 5};
 

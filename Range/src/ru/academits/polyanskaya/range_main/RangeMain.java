@@ -12,8 +12,8 @@ public class RangeMain {
 
         Range range2 = new Range(4, 8);
 
-        range2.setFrom(4);
-        range2.setTo(9);
+        range2.setFrom(5);
+        range2.setTo(7);
 
         System.out.printf("Длина диапазона от %.2f до %.2f: %.2f.%n%n", range2.getFrom(), range2.getTo(), range2.getLength());
 

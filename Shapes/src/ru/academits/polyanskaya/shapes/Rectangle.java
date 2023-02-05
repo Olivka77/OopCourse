@@ -1,8 +1,6 @@
-package ru.academits.polyanskaya.rectangle;
+package ru.academits.polyanskaya.shapes;
 
-import ru.academits.polyanskaya.shape_interface.ShapeInterface;
-
-public class Rectangle implements ShapeInterface {
+public class Rectangle implements ShapesBehavior {
     private final double sideLength1;
     private final double sideLength2;
 

@@ -1,6 +1,6 @@
-package ru.academits.polyanskaya.shape_interface;
+package ru.academits.polyanskaya.shapes;
 
-public interface ShapeInterface {
+public interface ShapesBehavior {
     double getWidth();
     double getHeight();
     double getArea();

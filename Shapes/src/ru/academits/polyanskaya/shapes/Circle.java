@@ -1,8 +1,6 @@
-package ru.academits.polyanskaya.circle;
+package ru.academits.polyanskaya.shapes;
 
-import ru.academits.polyanskaya.shape_interface.ShapeInterface;
-
-public class Circle implements ShapeInterface {
+public class Circle implements ShapesBehavior {
     private final double radius;
 
     public Circle(double radius) {

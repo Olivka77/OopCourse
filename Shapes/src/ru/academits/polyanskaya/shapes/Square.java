@@ -1,8 +1,6 @@
-package ru.academits.polyanskaya.square;
+package ru.academits.polyanskaya.shapes;
 
-import ru.academits.polyanskaya.shape_interface.ShapeInterface;
-
-public class Square implements ShapeInterface {
+public class Square implements ShapesBehavior {
     private final double sideLength;
 
     public Square(double sideLength) {

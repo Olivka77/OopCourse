@@ -1,8 +1,6 @@
-package ru.academits.polyanskaya.triangle;
+package ru.academits.polyanskaya.shapes;
 
-import ru.academits.polyanskaya.shape_interface.ShapeInterface;
-
-public class Triangle implements ShapeInterface {
+public class Triangle implements ShapesBehavior {
     private final double x1;
     private final double y1;
     private final double x2;

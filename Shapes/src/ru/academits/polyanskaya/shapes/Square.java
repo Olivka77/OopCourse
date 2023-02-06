@@ -1,11 +1,6 @@
 package ru.academits.polyanskaya.shapes;
 
-public class Square implements ShapesBehavior {
-    private final double sideLength;
-
-    public Square(double sideLength) {
-        this.sideLength = sideLength;
-    }
+public record Square(double sideLength) implements ShapesBehavior {
 
     @Override
     public double getWidth() {
@@ -29,7 +24,7 @@ public class Square implements ShapesBehavior {
 
     @Override
     public String toString() {
-        return System.lineSeparator() + "квадрат: сторона = " + sideLength + ", ширина = " + getWidth() + ", высота = " +
+        return "Квадрат: сторона = " + sideLength + ", ширина = " + getWidth() + ", высота = " +
                 getHeight() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 
@@ -42,15 +37,15 @@ public class Square implements ShapesBehavior {
     }
 
     @Override
-    public boolean equals(Object square) {
-        if (square == this) {
+    public boolean equals(Object obj) {
+        if (obj == this) {
             return true;
         }
 
-        if (square == null || square.getClass() != getClass()) {
+        if (obj == null || obj.getClass() != getClass()) {
             return false;
         }
 
-        return sideLength == (((Square) square).sideLength);
+        return sideLength == (((Square) obj).sideLength);
     }
 }

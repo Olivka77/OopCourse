@@ -1,16 +1,10 @@
 package ru.academits.polyanskaya.shapes_main;
 
-import ru.academits.polyanskaya.shapes.Circle;
-import ru.academits.polyanskaya.shapes.ShapesComparatorByArea;
-import ru.academits.polyanskaya.shapes.Rectangle;
-import ru.academits.polyanskaya.shapes.ShapesBehavior;
-import ru.academits.polyanskaya.shapes.Square;
-import ru.academits.polyanskaya.shapes.Triangle;
+import ru.academits.polyanskaya.shapes.*;
 
 import java.util.Arrays;
 
 public class ShapesMain {
-
     public static void main(String[] args) {
         ShapesBehavior[] shapes = {
                 new Circle(20),
@@ -29,15 +23,15 @@ public class ShapesMain {
         System.out.println("Проверка переопределения equals: " + shapes[6].equals(shapes[7]));
     }
 
-    public static ShapesBehavior getShapeWithMaxArea(ShapesBehavior[] shapesArray) {
-        Arrays.sort(shapesArray, new ShapesComparatorByArea());
+    public static ShapesBehavior getShapeWithMaxArea(ShapesBehavior[] shapes) {
+        Arrays.sort(shapes, new ShapesComparatorByArea());
 
-        return shapesArray[shapesArray.length - 1];
+        return shapes[shapes.length - 1];
     }
 
-    public static ShapesBehavior getShapeWithPreviousMaxPerimeter(ShapesBehavior[] shapesArray) {
-        Arrays.sort(shapesArray, new ShapesComparatorByArea());
+    public static ShapesBehavior getShapeWithPreviousMaxPerimeter(ShapesBehavior[] shapes) {
+        Arrays.sort(shapes, new ShapesComparatorByPerimeter());
 
-        return shapesArray[shapesArray.length - 2];
+        return shapes[shapes.length - 2];
     }
 }

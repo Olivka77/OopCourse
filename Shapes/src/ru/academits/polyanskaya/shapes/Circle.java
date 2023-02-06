@@ -1,11 +1,6 @@
 package ru.academits.polyanskaya.shapes;
 
-public class Circle implements ShapesBehavior {
-    private final double radius;
-
-    public Circle(double radius) {
-        this.radius = radius;
-    }
+public record Circle(double radius) implements ShapesBehavior {
 
     @Override
     public double getWidth() {
@@ -19,17 +14,17 @@ public class Circle implements ShapesBehavior {
 
     @Override
     public double getArea() {
-        return Math.PI * Math.pow(radius, 2);
+        return Math.PI * radius * radius;
     }
 
     @Override
     public double getPerimeter() {
-        return Math.PI * radius;
+        return 2 * Math.PI * radius;
     }
 
     @Override
     public String toString() {
-        return System.lineSeparator() + "окружность: радиус = " + radius + ", диаметр = " + getWidth() +
+        return "Окружность: радиус = " + radius + ", диаметр = " + getWidth() +
                 ", длина = " + getPerimeter() + ", площадь = " + getArea();
     }
 
@@ -42,15 +37,15 @@ public class Circle implements ShapesBehavior {
     }
 
     @Override
-    public boolean equals(Object circle) {
-        if (circle == this) {
+    public boolean equals(Object obj) {
+        if (obj == this) {
             return true;
         }
 
-        if (circle == null || circle.getClass() != getClass()) {
+        if (obj == null || obj.getClass() != getClass()) {
             return false;
         }
 
-        return radius == (((Circle) circle).radius);
+        return radius == (((Circle) obj).radius);
     }
 }

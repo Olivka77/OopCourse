@@ -89,16 +89,16 @@ public class Vector {
     }
 
     public Vector addVector(Vector vector) {
-        if (this.components.length < vector.components.length) {
-            for (int i = 0; i < this.components.length; i++) {
-                vector.components[i] += this.components[i];
+        if (components.length < vector.components.length) {
+            for (int i = 0; i < components.length; i++) {
+                vector.components[i] += components[i];
             }
 
             return vector;
         }
 
         for (int i = 0; i < vector.components.length; i++) {
-            this.components[i] += vector.components[i];
+            components[i] += vector.components[i];
         }
 
         return this;

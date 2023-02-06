@@ -3,7 +3,7 @@ package ru.academits.polyanskaya.shapes;
 public record Triangle(double x1, double y1, double x2, double y2, double x3, double y3) implements ShapesBehavior {
 
     @Override
-    public double getWidth() {
+    public double width() {
         double maxX = Math.max(x1, x2);
         maxX = Math.max(maxX, x3);
 
@@ -14,7 +14,7 @@ public record Triangle(double x1, double y1, double x2, double y2, double x3, do
     }
 
     @Override
-    public double getHeight() {
+    public double height() {
         double maxY = Math.max(y1, y2);
         maxY = Math.max(maxY, y3);
 
@@ -44,7 +44,7 @@ public record Triangle(double x1, double y1, double x2, double y2, double x3, do
     @Override
     public String toString() {
         return "Треугольник: x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2 +
-                ", x3 = " + x3 + ", y3 = " + y3 + ", ширина = " + getWidth() + ", высота = " + getHeight() +
+                ", x3 = " + x3 + ", y3 = " + y3 + ", ширина = " + width() + ", высота = " + height() +
                 ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 

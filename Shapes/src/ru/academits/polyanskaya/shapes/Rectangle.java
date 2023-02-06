@@ -1,21 +1,14 @@
 package ru.academits.polyanskaya.shapes;
 
-public class Rectangle implements ShapesBehavior {
-    private final double width;
-    private final double height;
-
-    public Rectangle(double sideLength1, double height) {
-        this.width = sideLength1;
-        this.height = height;
-    }
+public record Rectangle(double width, double height) implements ShapesBehavior {
 
     @Override
-    public double getWidth() {
+    public double width() {
         return Math.max(width, height);
     }
 
     @Override
-    public double getHeight() {
+    public double height() {
         return Math.min(width, height);
     }
 
@@ -31,8 +24,8 @@ public class Rectangle implements ShapesBehavior {
 
     @Override
     public String toString() {
-        return "Прямоугольник: сторона 1 = " + width + ", сторона 2 = " + height + ", ширина = " + getWidth() + ", высота = " +
-                getHeight() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
+        return "Прямоугольник: сторона 1 = " + width + ", сторона 2 = " + height + ", ширина = " + width() + ", высота = " +
+                height() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 
     @Override

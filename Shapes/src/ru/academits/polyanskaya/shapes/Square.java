@@ -3,12 +3,12 @@ package ru.academits.polyanskaya.shapes;
 public record Square(double sideLength) implements ShapesBehavior {
 
     @Override
-    public double getWidth() {
+    public double width() {
         return sideLength;
     }
 
     @Override
-    public double getHeight() {
+    public double height() {
         return sideLength;
     }
 
@@ -24,8 +24,8 @@ public record Square(double sideLength) implements ShapesBehavior {
 
     @Override
     public String toString() {
-        return "Квадрат: сторона = " + sideLength + ", ширина = " + getWidth() + ", высота = " +
-                getHeight() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
+        return "Квадрат: сторона = " + sideLength + ", ширина = " + width() + ", высота = " +
+                height() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 
     @Override

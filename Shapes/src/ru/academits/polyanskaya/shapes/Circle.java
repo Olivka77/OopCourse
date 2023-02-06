@@ -3,12 +3,12 @@ package ru.academits.polyanskaya.shapes;
 public record Circle(double radius) implements ShapesBehavior {
 
     @Override
-    public double getWidth() {
+    public double width() {
         return radius + radius;
     }
 
     @Override
-    public double getHeight() {
+    public double height() {
         return radius + radius;
     }
 
@@ -24,7 +24,7 @@ public record Circle(double radius) implements ShapesBehavior {
 
     @Override
     public String toString() {
-        return "Окружность: радиус = " + radius + ", диаметр = " + getWidth() +
+        return "Окружность: радиус = " + radius + ", диаметр = " + width() +
                 ", длина = " + getPerimeter() + ", площадь = " + getArea();
     }
 

@@ -73,7 +73,7 @@ public class Vector {
 
         for (int i = 0; i < dimension; i++) {
             if (i == 0) {
-                string = new StringBuilder("{ ");
+                string.append("{ ");
             }
 
             if (i < dimension - 1) {

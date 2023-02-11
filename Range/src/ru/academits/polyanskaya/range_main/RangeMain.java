@@ -6,16 +6,21 @@ import java.util.Scanner;
 
 public class RangeMain {
     public static void main(String[] args) {
-        Range range1 = new Range(2, 6);
+        Range range1 = new Range(5, 7);
 
-        System.out.printf("Длина диапазона от %.2f до %.2f: %.2f.%n", range1.getFrom(), range1.getTo(), range1.getLength());
+        double number1 = range1.getFrom();
+        double number2 = range1.getTo();
+
+        System.out.println(number1 + " в степени " + number2 + ": " + Math.pow(number1, number2));
+
+        System.out.println("Длина диапазона " + range1 + ": " + range1.getLength());
 
         Range range2 = new Range(4, 8);
 
-        range2.setFrom(5);
-        range2.setTo(7);
+        range2.setFrom(4);
+        range2.setTo(8);
 
-        System.out.printf("Длина диапазона от %.2f до %.2f: %.2f.%n%n", range2.getFrom(), range2.getTo(), range2.getLength());
+        System.out.println("Длина диапазона " + range2 + ": " + range2.getLength());
 
         Scanner scanner = new Scanner(System.in);
 
@@ -23,42 +28,43 @@ public class RangeMain {
         double number = scanner.nextDouble();
 
         if (range1.isInside(number)) {
-            System.out.printf("Данное число принадлежит диапазону от %.2f до %.2f.%n%n", range1.getFrom(), range1.getTo());
+            System.out.println("Данное число принадлежит диапазону " + range1);
         } else {
-            System.out.printf("Данное число не принадлежит диапазону от %.2f до %.2f.%n%n", range1.getFrom(), range1.getTo());
+            System.out.println("Данное число не принадлежит диапазону " + range1);
         }
 
-        Range range3 = range1.getIntersection(range2);
+        Range intersection = range1.getIntersection(range2);
 
-        if (range3 == null) {
-            System.out.printf("Диапазоны от %.2f до %.2f и от %.2f до %.2f не пересекаются.%n%n",
-                    range1.getFrom(), range1.getTo(), range2.getFrom(), range2.getTo());
+        if (intersection == null) {
+            System.out.println("Диапазоны " + range1 + " и " + range2 + " не пересекаются.");
         } else {
-            System.out.printf("Диапазоны от %.2f до %.2f и от %.2f до %.2f пересекаются на интервале от %.2f до %.2f.%n%n",
-                    range1.getFrom(), range1.getTo(), range2.getFrom(), range2.getTo(), range3.getFrom(), range3.getTo());
+            System.out.println("Диапазоны " + range1 + " и " + range2 + " пересекаются на интервале " + intersection);
         }
 
-        Range[] range4 = range1.getUnion(range2);
+        Range[] union = range1.getUnion(range2);
 
-        System.out.printf("Объединение диапазонов от %.2f до %.2f и от %.2f до %.2f: от %.2f до %.2f", range1.getFrom(),
-                range1.getTo(), range2.getFrom(), range2.getTo(), range4[0].getFrom(), range4[0].getTo());
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ": " + printRangesArray(union));
 
-        if (range4.length > 1) {
-            System.out.printf(" и от %.2f до %.2f", range4[1].getFrom(), range4[1].getTo());
-        }
+        Range[] difference = range1.getDifference(range2);
 
-        Range[] range5 = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ": " + printRangesArray(difference));
+    }
 
-        if (range5.length == 0) {
-            System.out.printf(".%n%nРазность диапазонов от %.2f до %.2f и от %.2f до %.2f - пустое множество.%n%n",
-                    range1.getFrom(), range1.getTo(), range2.getFrom(), range2.getTo());
-        } else {
-            System.out.printf(".%n%nРазность диапазонов от %.2f до %.2f и от %.2f до %.2f: от %.2f до %.2f", range1.getFrom(),
-                    range1.getTo(), range2.getFrom(), range2.getTo(), range5[0].getFrom(), range5[0].getTo());
+    public static StringBuilder printRangesArray(Range[] rangesArray) {
+        StringBuilder stringBuilder = new StringBuilder();
 
-            if (range5.length > 1) {
-                System.out.printf(" и от %.2f до %.2f.%n", range5[1].getFrom(), range5[1].getTo());
+        stringBuilder.append("[");
+
+        for (int i = 0; i < rangesArray.length; i++) {
+            stringBuilder.append(rangesArray[i].toString());
+
+            if (i < rangesArray.length - 1) {
+                stringBuilder.append(", ");
             }
         }
+
+        stringBuilder.append("]");
+
+        return stringBuilder;
     }
 }

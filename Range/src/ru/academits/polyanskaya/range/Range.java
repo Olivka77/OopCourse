@@ -42,11 +42,15 @@ public class Range {
     }
 
     public Range[] getUnion(Range range) {
-        if (range.from <= to || range.to <= from) {
-            return new Range[]{new Range(Math.min(range.from, from), Math.max(range.to, to))};
+        if (getIntersection(range) == null) {
+            if (from < range.from) {
+                return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+            }
+
+            return new Range[]{new Range(range.from, range.to), new Range(from, to)};
         }
 
-        return new Range[]{new Range(from, to), new Range(range.from, range.to)};
+        return new Range[]{new Range(Math.min(range.from, from), Math.max(range.to, to))};
     }
 
     public Range[] getDifference(Range range) {
@@ -67,5 +71,10 @@ public class Range {
         }
 
         return new Range[]{new Range(from, range.from)};
+    }
+
+    @Override
+    public String toString() {
+        return "(" + from + "; " + to + ")";
     }
 }

@@ -23,20 +23,23 @@ public class VectorMain {
         System.out.println("Вектор 5 " + vector5);
         System.out.println("Вектор 6 " + vector6);
 
-        System.out.println("Вектор 6 + вектор 2 = " + vector6.addVector(vector2));
+        System.out.println("Вектор 6 + вектор 2 = " + vector6.add(vector2));
         System.out.println("Вектор 2 после addVector " + vector2);
         System.out.println("Вектор 6 после addVector " + vector6);
 
-        Vector vector7 = new Vector(vector6.subtractVector(vector4));
+        Vector vector7 = new Vector(vector6.subtract(vector4));
         System.out.println("Вектор 6 - вектор 4 = " + vector7);
         System.out.println("Вектор 6 после subtractVector " + vector6);
         System.out.println("Вектор 4 после subtractVector " + vector4);
 
-        Vector vector8 = new Vector(vector5.multiplyByScalar(2));
-        System.out.println("Вектор 5 * скаляр = " + vector8);
+        Vector vector8 = new Vector(components2);
+        vector8.multiplyByScalar(2);
+        System.out.println("Вектор 8 * скаляр = " + vector8);
+        vector8.setComponent(0, 111);
+        System.out.println("Вектор 8 с измененной компонентой: " + vector8);
 
-        Vector vector9 = new Vector(vector4.vectorReversal());
-        System.out.println("Разворот вектор 4 = " + vector9);
+        Vector vector9 = new Vector(vector4.deploy());
+        System.out.println("Разворот вектора 4 = " + vector9);
         System.out.println("Длина вектора 4 = " + vector4.getLength());
         System.out.println("Компонента вектора 4 по индексу [4] = " + vector4.getComponent(4));
 
@@ -50,9 +53,8 @@ public class VectorMain {
         System.out.println("Вектор 10 после getSum " + vector10);
         System.out.println("Вектор 11 после getSum " + vector11);
 
-
         System.out.println("Разность векторов = " + Vector.getDifference(vector10, vector11));
 
-        System.out.println("Скалярное произведение вектора 10 и вектора 11 = " + Vector.scalarProduct(vector10, vector11));
+        System.out.println("Скалярное произведение вектора 10 и вектора 11 = " + Vector.getScalarProduct(vector10, vector11));
     }
 }

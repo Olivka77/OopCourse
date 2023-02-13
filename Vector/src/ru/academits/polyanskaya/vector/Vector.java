@@ -10,7 +10,7 @@ public class Vector {
             throw new IllegalArgumentException("Размер вектора = " + vectorSize + ", размерность должна быть больше нуля");
         }
 
-        this.components = new double[vectorSize];
+        components = new double[vectorSize];
     }
 
     public Vector(Vector copy) {
@@ -54,7 +54,7 @@ public class Vector {
 
     public Vector add(Vector vector) {
         if (components.length < vector.components.length) {
-            this.components = Arrays.copyOf(components, vector.getSize());
+            components = Arrays.copyOf(components, vector.getSize());
         }
 
         for (int i = 0; i < components.length; i++) {
@@ -66,7 +66,7 @@ public class Vector {
 
     public Vector subtract(Vector vector) {
         if (components.length < vector.components.length) {
-            this.components = Arrays.copyOf(components, vector.components.length);
+            components = Arrays.copyOf(components, vector.components.length);
         }
 
         for (int i = 0; i < components.length; i++) {
@@ -111,7 +111,7 @@ public class Vector {
             throw new IllegalArgumentException("Индекс компоненты вектора: " + index + ", индекс не может быть меньше 0");
         }
 
-        this.components[index] = component;
+        components[index] = component;
     }
 
     @Override

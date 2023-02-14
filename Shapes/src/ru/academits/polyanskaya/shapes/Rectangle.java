@@ -1,15 +1,14 @@
 package ru.academits.polyanskaya.shapes;
 
-public record Rectangle(double width, double height) implements ShapesBehavior {
-
+public record Rectangle(double width, double height) implements Shape {
     @Override
-    public double width() {
-        return Math.max(width, height);
+    public double getWidth() {
+        return width;
     }
 
     @Override
-    public double height() {
-        return Math.min(width, height);
+    public double getHeight() {
+        return height;
     }
 
     @Override
@@ -19,13 +18,15 @@ public record Rectangle(double width, double height) implements ShapesBehavior {
 
     @Override
     public double getPerimeter() {
-        return width + width + height + height;
+        final int doubleSidesCount = 2;
+
+        return doubleSidesCount * (width + height);
     }
 
     @Override
     public String toString() {
-        return "Прямоугольник: сторона 1 = " + width + ", сторона 2 = " + height + ", ширина = " + width() + ", высота = " +
-                height() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
+        return "Прямоугольник: сторона 1 = " + width + ", сторона 2 = " + height + ", ширина = " + getWidth() + ", высота = " +
+                getHeight() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 
     @Override

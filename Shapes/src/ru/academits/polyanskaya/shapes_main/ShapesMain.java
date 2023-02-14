@@ -1,12 +1,14 @@
 package ru.academits.polyanskaya.shapes_main;
 
+import ru.academits.polyanskaya.comparators.ShapesByAreaComparator;
+import ru.academits.polyanskaya.comparators.ShapesByPerimeterComparator;
 import ru.academits.polyanskaya.shapes.*;
 
 import java.util.Arrays;
 
 public class ShapesMain {
     public static void main(String[] args) {
-        ShapesBehavior[] shapes = {
+        Shape[] shapes = {
                 new Circle(20),
                 new Circle(20),
                 new Square(10.2),
@@ -23,14 +25,14 @@ public class ShapesMain {
         System.out.println("Проверка переопределения equals: " + shapes[6].equals(shapes[7]));
     }
 
-    public static ShapesBehavior getShapeWithMaxArea(ShapesBehavior[] shapes) {
-        Arrays.sort(shapes, new ShapesComparatorByArea());
+    public static Shape getShapeWithMaxArea(Shape[] shapes) {
+        Arrays.sort(shapes, new ShapesByAreaComparator());
 
         return shapes[shapes.length - 1];
     }
 
-    public static ShapesBehavior getShapeWithPreviousMaxPerimeter(ShapesBehavior[] shapes) {
-        Arrays.sort(shapes, new ShapesComparatorByPerimeter());
+    public static Shape getShapeWithPreviousMaxPerimeter(Shape[] shapes) {
+        Arrays.sort(shapes, new ShapesByPerimeterComparator());
 
         return shapes[shapes.length - 2];
     }

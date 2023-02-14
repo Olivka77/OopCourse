@@ -1,9 +1,9 @@
 package ru.academits.polyanskaya.shapes;
 
-public interface ShapesBehavior {
-    double width();
+public interface Shape {
+    double getWidth();
 
-    double height();
+    double getHeight();
 
     double getArea();
 

@@ -1,39 +1,34 @@
 package ru.academits.polyanskaya.shapes;
 
-public record Triangle(double x1, double y1, double x2, double y2, double x3, double y3) implements ShapesBehavior {
-
+public record Triangle(double x1, double y1, double x2, double y2, double x3, double y3) implements Shape {
     @Override
-    public double width() {
-        double maxX = Math.max(x1, x2);
-        maxX = Math.max(maxX, x3);
-
-        double minX = Math.min(x1, x2);
-        minX = Math.min(minX, x3);
+    public double getWidth() {
+        double maxX = Math.max(Math.max(x1, x2), x3);
+        double minX = Math.min(Math.min(x1, x2), x3);
 
         return maxX - minX;
     }
 
     @Override
-    public double height() {
-        double maxY = Math.max(y1, y2);
-        maxY = Math.max(maxY, y3);
-
-        double minY = Math.min(y1, y2);
-        minY = Math.min(minY, y3);
+    public double getHeight() {
+        double maxY = Math.max(Math.max(y1, y2), y3);
+        double minY = Math.min(Math.min(y1, y2), y3);
 
         return maxY - minY;
     }
 
-    public double getSegmentLength(double coordinate1, double coordinate2, double coordinate3, double coordinate4) {
-        return Math.sqrt(Math.pow(coordinate1 - coordinate2, 2) + Math.pow(coordinate3 - coordinate4, 2));
+    private static double getSegmentLength(double segmentPointX2, double segmentPointX1, double segmentPointY2, double segmentPointY1) {
+        return Math.sqrt(Math.pow(segmentPointX2 - segmentPointX1, 2) + Math.pow(segmentPointY2 - segmentPointY1, 2));
     }
 
     @Override
     public double getArea() {
-        double halfPerimeter = getPerimeter() / 2;
+        double sideLength1 = getSegmentLength(x2, x1, y2, y1);
+        double sideLength2 = getSegmentLength(x3, x1, y3, y1);
+        double sideLength3 = getSegmentLength(x3, x2, y3, y2);
+        double halfPerimeter = (sideLength1 + sideLength2 + sideLength3) / 2;
 
-        return Math.sqrt(halfPerimeter * (halfPerimeter - getSegmentLength(x2, x1, y2, y1)) *
-                (halfPerimeter - getSegmentLength(x3, x1, y3, y1)) * (halfPerimeter - getSegmentLength(x3, x2, y3, y2)));
+        return Math.sqrt(halfPerimeter * (halfPerimeter - sideLength1) * (halfPerimeter - sideLength2) * (halfPerimeter - sideLength3));
     }
 
     @Override
@@ -44,7 +39,7 @@ public record Triangle(double x1, double y1, double x2, double y2, double x3, do
     @Override
     public String toString() {
         return "Треугольник: x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2 +
-                ", x3 = " + x3 + ", y3 = " + y3 + ", ширина = " + width() + ", высота = " + height() +
+                ", x3 = " + x3 + ", y3 = " + y3 + ", ширина = " + getWidth() + ", высота = " + getHeight() +
                 ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 

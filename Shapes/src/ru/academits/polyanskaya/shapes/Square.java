@@ -1,14 +1,13 @@
 package ru.academits.polyanskaya.shapes;
 
-public record Square(double sideLength) implements ShapesBehavior {
-
+public record Square(double sideLength) implements Shape {
     @Override
-    public double width() {
+    public double getWidth() {
         return sideLength;
     }
 
     @Override
-    public double height() {
+    public double getHeight() {
         return sideLength;
     }
 
@@ -19,13 +18,15 @@ public record Square(double sideLength) implements ShapesBehavior {
 
     @Override
     public double getPerimeter() {
-        return sideLength + sideLength + sideLength + sideLength;
+        final int sidesCount = 4;
+
+        return sidesCount * sideLength;
     }
 
     @Override
     public String toString() {
-        return "Квадрат: сторона = " + sideLength + ", ширина = " + width() + ", высота = " +
-                height() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
+        return "Квадрат: сторона = " + sideLength + ", ширина = " + getWidth() + ", высота = " +
+                getHeight() + ", периметр = " + getPerimeter() + ", площадь = " + getArea();
     }
 
     @Override
@@ -33,6 +34,7 @@ public record Square(double sideLength) implements ShapesBehavior {
         final int prime = 11;
         int hash = 1;
         hash = prime * hash + Double.hashCode(sideLength);
+
         return hash;
     }
 

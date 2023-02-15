@@ -104,7 +104,8 @@ public class Vector {
 
     public void setComponent(int index, double component) {
         if (index > components.length - 1) {
-            throw new IllegalArgumentException("Индекс компоненты вектора: " + index + ", данный индекс больше максимально допустимого для текущего вектора: " + (components.length - 1));
+            throw new IllegalArgumentException("Индекс компоненты вектора: " + index + ", " +
+                    "данный индекс больше максимально допустимого для текущего вектора: " + (components.length - 1));
         }
 
         if (index < 0) {

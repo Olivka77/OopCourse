@@ -8,11 +8,10 @@ public class Matrix {
     private final Vector[] matrixRows;
 
     public Matrix(int n, int m) {
-        int maxSize = Math.max(n, m);
-        matrixRows = new Vector[maxSize];
+        matrixRows = new Vector[n];
 
-        for (int i = 0; i < maxSize; i++) {
-            matrixRows[i] = new Vector(maxSize);
+        for (int i = 0; i < n; i++) {
+            matrixRows[i] = new Vector(m);
         }
     }
 
@@ -23,47 +22,71 @@ public class Matrix {
     public Matrix(double[][] array) {
         matrixRows = new Vector[array.length];
 
+        int maxRowLength = 0;
+
+        for (int i = 0; i < matrixRows.length; i++) {
+            if (array[i].length > maxRowLength) {
+                maxRowLength = array[i].length;
+            }
+        }
+
         for (int i = 0; i < array.length; i++) {
-            matrixRows[i] = new Vector(Arrays.copyOf(array[i], array.length));
+            matrixRows[i] = new Vector(Arrays.copyOf(array[i], maxRowLength));
         }
     }
 
     public Matrix(Vector[] vectors) {
         matrixRows = new Vector[vectors.length];
 
+        int maxVectorSize = 0;
+
+        for (Vector vector : vectors) {
+            if (vector.getSize() > maxVectorSize) {
+                maxVectorSize = vector.getSize();
+            }
+        }
+
         for (int i = 0; i < vectors.length; i++) {
-            int vectorSize = vectors[i].getSize();
+            double[] components = new double[maxVectorSize];
 
-            double[] components = new double[vectorSize];
-
-            for (int j = 0; j < vectorSize; j++) {
+            for (int j = 0; j < vectors[i].getSize(); j++) {
                 components[j] = vectors[i].getComponent(j);
             }
 
-            matrixRows[i] = new Vector(vectors.length, components);
+            matrixRows[i] = new Vector(maxVectorSize, components);
         }
     }
 
-    public int getSize() {
-        int matrixSize = matrixRows.length;
+    public int[] getSize() { // Исключение на вызов от null?
+        int rowsCount = matrixRows.length;
+        int columnsCount = matrixRows[0].getSize();
 
-        for (Vector matrixRow : matrixRows) {
-            if (matrixRow.getSize() != matrixSize) {
-                throw new IllegalArgumentException("Матрица " + matrixSize + " x " + matrixRow.getSize() +
-                        " не является квадратной");
+        for (int i = 0; i < rowsCount; i++) {
+            if (columnsCount != matrixRows[i].getSize()) { // Нужно ли? Могут ли у созданного объекта быть разные строки?
+                throw new IllegalArgumentException("Разная длина строк матрицы: строка 1 длиной " + columnsCount +
+                        ", строка " + (i + 1) + " длиной " + matrixRows[i].getSize());
             }
         }
 
-        return matrixSize;
+        return new int[]{rowsCount, columnsCount};
     }
 
     public Vector getVector(int index) {
+        if (index > getSize()[0] - 1) {
+            throw new IllegalArgumentException("Индекс " + index + " превышает максимально допустимый индекс вектора " +
+                    (this.getSize()[0] - 1));
+        }
 
+        if (index < 0) {
+            throw new IllegalArgumentException("Передан индекс " + index + ", индекс не может быть отрицательным");
+        }
+
+        return new Vector(matrixRows[index]);
     }
 
-    public void setVector(int index) {
+    /*public void setVector(int index) { // Добавить исключение про вектор отличающейся длины
 
-    }
+    }*/
 
     @Override
     public String toString() {

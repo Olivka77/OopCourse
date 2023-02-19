@@ -42,7 +42,7 @@ public class Range {
     }
 
     public Range[] getUnion(Range range) {
-        if (getIntersection(range) == null) {
+        if (range.from > to || range.to < from) {
             if (from < range.from) {
                 return new Range[]{new Range(from, to), new Range(range.from, range.to)};
             }

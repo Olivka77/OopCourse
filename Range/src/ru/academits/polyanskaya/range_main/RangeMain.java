@@ -2,24 +2,22 @@ package ru.academits.polyanskaya.range_main;
 
 import ru.academits.polyanskaya.range.Range;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class RangeMain {
     public static void main(String[] args) {
         Range range1 = new Range(5, 7);
 
-        double number1 = range1.getFrom();
-        double number2 = range1.getTo();
-
-        System.out.println(number1 + " в степени " + number2 + ": " + Math.pow(number1, number2));
-
         System.out.println("Длина диапазона " + range1 + ": " + range1.getLength());
 
         Range range2 = new Range(4, 8);
 
-        range2.setFrom(4);
-        range2.setTo(8);
+        range2.setFrom(8);
+        range2.setTo(9);
 
+        System.out.println("Значение поля from объекта range2 после изменения: " + range2.getFrom());
+        System.out.println("Значение поля to объекта range2 после изменения: " + range2.getTo());
         System.out.println("Длина диапазона " + range2 + ": " + range2.getLength());
 
         Scanner scanner = new Scanner(System.in);
@@ -42,29 +40,9 @@ public class RangeMain {
         }
 
         Range[] union = range1.getUnion(range2);
-
-        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ": " + printRangesArray(union));
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ": " + Arrays.toString(union));
 
         Range[] difference = range1.getDifference(range2);
-
-        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ": " + printRangesArray(difference));
-    }
-
-    public static StringBuilder printRangesArray(Range[] rangesArray) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("[");
-
-        for (int i = 0; i < rangesArray.length; i++) {
-            stringBuilder.append(rangesArray[i].toString());
-
-            if (i < rangesArray.length - 1) {
-                stringBuilder.append(", ");
-            }
-        }
-
-        stringBuilder.append("]");
-
-        return stringBuilder;
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ": " + Arrays.toString(difference));
     }
 }

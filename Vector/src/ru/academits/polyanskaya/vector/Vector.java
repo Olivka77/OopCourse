@@ -19,7 +19,7 @@ public class Vector {
 
     public Vector(double[] components) {
         if (components.length == 0) {
-            throw new IllegalArgumentException("Размер вектора = " + components.length + ", размерность должна быть больше нуля");
+            throw new IllegalArgumentException("Размер массива = " + components.length + ", размерность должна быть больше нуля");
         }
 
         this.components = Arrays.copyOf(components, components.length);
@@ -47,7 +47,7 @@ public class Vector {
             stringBuilder.append(component).append(", ");
         }
 
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1).deleteCharAt(stringBuilder.length() - 1).append("}");
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1).append("}");
 
         return stringBuilder.toString();
     }
@@ -57,7 +57,7 @@ public class Vector {
             components = Arrays.copyOf(components, vector.getSize());
         }
 
-        for (int i = 0; i < components.length; i++) {
+        for (int i = 0; i < vector.components.length; i++) {
             components[i] += vector.components[i];
         }
 
@@ -69,7 +69,7 @@ public class Vector {
             components = Arrays.copyOf(components, vector.components.length);
         }
 
-        for (int i = 0; i < components.length; i++) {
+        for (int i = 0; i < vector.components.length; i++) {
             components[i] -= vector.components[i];
         }
 
@@ -82,8 +82,8 @@ public class Vector {
         }
     }
 
-    public Vector deploy() {
-        this.multiplyByScalar(-1);
+    public Vector reverse() {
+        multiplyByScalar(-1);
 
         return this;
     }
@@ -103,15 +103,6 @@ public class Vector {
     }
 
     public void setComponent(int index, double component) {
-        if (index > components.length - 1) {
-            throw new IllegalArgumentException("Индекс компоненты вектора: " + index + ", " +
-                    "данный индекс больше максимально допустимого для текущего вектора: " + (components.length - 1));
-        }
-
-        if (index < 0) {
-            throw new IllegalArgumentException("Индекс компоненты вектора: " + index + ", индекс не может быть меньше 0");
-        }
-
         components[index] = component;
     }
 
@@ -127,7 +118,7 @@ public class Vector {
 
         Vector vector = (Vector) object;
 
-        return components.length == vector.components.length && Arrays.equals(components, vector.components);
+        return Arrays.equals(components, vector.components);
     }
 
     @Override

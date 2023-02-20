@@ -38,7 +38,7 @@ public class VectorMain {
         vector8.setComponent(0, 111);
         System.out.println("Вектор 8 с измененной компонентой: " + vector8);
 
-        Vector vector9 = new Vector(vector4.deploy());
+        Vector vector9 = new Vector(vector4.reverse());
         System.out.println("Разворот вектора 4 = " + vector9);
         System.out.println("Длина вектора 4 = " + vector4.getLength());
         System.out.println("Компонента вектора 4 по индексу [4] = " + vector4.getComponent(4));

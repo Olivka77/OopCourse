@@ -65,12 +65,12 @@ public class Matrix {
 
     public Vector getVectorRow(int index) {
         if (index > getSize()[0] - 1) {
-            throw new IllegalArgumentException("Индекс: " + index + " превышает максимально допустимый индекс строки матрицы: " +
+            throw new ArrayIndexOutOfBoundsException("Индекс: " + index + " превышает максимально допустимый индекс строки матрицы: " +
                     (getSize()[0] - 1));
         }
 
         if (index < 0) {
-            throw new IllegalArgumentException("Передан индекс " + index + ", индекс не может быть отрицательным");
+            throw new ArrayIndexOutOfBoundsException("Передан индекс " + index + ", индекс не может быть отрицательным");
         }
 
         return new Vector(matrixRows[index]);
@@ -78,16 +78,16 @@ public class Matrix {
 
     public void setVectorRow(int index, Vector vector) {
         if (index > getSize()[0] - 1) {
-            throw new IllegalArgumentException("Индекс: " + index + " превышает максимально допустимый индекс строки матрицы: " +
+            throw new ArrayIndexOutOfBoundsException("Индекс: " + index + " превышает максимально допустимый индекс строки матрицы: " +
                     (getSize()[0] - 1));
         }
 
         if (index < 0) {
-            throw new IllegalArgumentException("Передан индекс " + index + ", индекс не может быть отрицательным");
+            throw new ArrayIndexOutOfBoundsException("Передан индекс " + index + ", индекс не может быть отрицательным");
         }
 
         if (vector.getSize() != matrixRows[index].getSize()) {
-            throw new IllegalArgumentException("Размер переданного вектора: " + vector.getSize() +
+            throw new ArrayIndexOutOfBoundsException("Размер переданного вектора: " + vector.getSize() +
                     ", что не соответствует размеру строки матрицы: " + matrixRows[index].getSize());
         }
 
@@ -98,12 +98,12 @@ public class Matrix {
         int[] matrixSize = getSize();
 
         if (index > matrixSize[1] - 1) {
-            throw new IllegalArgumentException("Индекс: " + index + " превышает максимально допустимый индекс столбца матрицы: " +
+            throw new ArrayIndexOutOfBoundsException("Индекс: " + index + " превышает максимально допустимый индекс столбца матрицы: " +
                     (matrixSize[1] - 1));
         }
 
         if (index < 0) {
-            throw new IllegalArgumentException("Передан индекс " + index + ", индекс не может быть отрицательным");
+            throw new ArrayIndexOutOfBoundsException("Передан индекс " + index + ", индекс не может быть отрицательным");
         }
 
         Vector vector = new Vector(matrixSize[1] - 1);
@@ -193,7 +193,49 @@ public class Matrix {
         return determinant;
     }
 
+    public void multiplyByVector(Vector vector, boolean vectorIsColumn) {
+        if (vectorIsColumn) {
+            if (getSize()[0] != vector.getSize()) {
+                throw new IllegalArgumentException("Размер матрицы " + getSize()[0] + " не соответствует размеру вектора " +
+                        vector.getSize() + ", для умножения матрицы на вектор-столбец размеры должны быть одинаковыми");
+            }
 
+            Vector[] vectors = new Vector[vector.getSize()];
+
+            for (int i = 0; i < getSize()[0]; i++) {
+                vectors[i] = new Vector(1);
+
+                for (int j = 0; j < getSize()[1]; j++) { // цикл j не нужен
+                    for (int k = 0; k < vector.getSize(); k++) {
+                        vectors[i].setComponent(0, vectors[i].getComponent(0) +
+                                matrixRows[i].getComponent(k) * vector.getComponent(k));
+                    }
+                }
+            }
+
+            this.matrixRows = vectors;
+        } else {
+            if (getSize()[1] > 1) {
+                throw new IllegalArgumentException("Матрица не является вектором-столбцом: количество столбцов в матрице " +
+                        getSize()[0] + ". Для умножения на вектор-строку матрица должна быть вектором-столбцом");
+            }
+
+            if (getSize()[0] != vector.getSize()) {
+                throw new IllegalArgumentException("Размер матрицы " + getSize()[0] + " не соответствует размеру вектора " +
+                        vector.getSize() + ". Для умножения матрицы на вектор-столбец размеры должны быть одинаковыми");
+            }
+
+            Vector[] vectors = new Vector[vector.getSize()];
+
+            for (int i = 0; i < getSize()[0]; i++) {
+                for (int j = 0; j < vector.getSize(); j++) {
+                    vectors[i].setComponent(j, matrixRows[i].getComponent(0) * vector.getComponent(j));
+                }
+            }
+
+            this.matrixRows = vectors;
+        }
+    }
 
     @Override
     public String toString() {
@@ -205,7 +247,7 @@ public class Matrix {
             stringBuilder.append(vector.toString()).append(", ");
         }
 
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1).deleteCharAt(stringBuilder.length() - 1).append("}");
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length()).append("}");
 
         return stringBuilder.toString();
     }

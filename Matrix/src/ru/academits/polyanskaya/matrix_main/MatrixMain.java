@@ -60,6 +60,31 @@ public class MatrixMain {
                 {4, 1, 1, 0}
         };
 
+        double[][] array3 = {
+                {2, 4, 0},
+                {-2, 1, 3},
+                {-1, 0, 1}
+        };
+
+        double[] array4 = {1, 2, -1};
+
+        double[][] array5 = {
+                {3},
+                {2},
+                {0},
+                {-1}
+        };
+
+        double[] array6 = {-1, 1, 0, 2};
+
+        Matrix matrix7 = new Matrix(array3);
+        Vector vector2 = new Vector(array4);
+        Matrix matrix8 = new Matrix(array5);
+        Vector vector3 = new Vector(array4);
+
+        matrix7.multiplyByVector(vector2, true);
+        System.out.println(matrix7);
+
         Matrix matrix6 = new Matrix(array2);
         System.out.println(matrix6.getDeterminant());
     }

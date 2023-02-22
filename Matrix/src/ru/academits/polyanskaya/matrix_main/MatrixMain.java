@@ -99,8 +99,12 @@ public class MatrixMain {
         };
 
         Matrix matrix9 = new Matrix(arrays7);
+        Matrix matrix10 = new Matrix(arrays7);
 
-        matrix9.add(matrix7);
+        matrix9.add(matrix10);
+        System.out.println(matrix9);
+
+        matrix9.subtract(matrix10);
         System.out.println(matrix9);
     }
 }

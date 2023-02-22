@@ -252,6 +252,20 @@ public class Matrix {
         }
     }
 
+    public void subtract(Matrix matrix) {
+        if (matrix.getSize()[0] != getSize()[0] || matrix.getSize()[1] != getSize()[1]) {
+            throw new IllegalArgumentException("Невозможно получить разность матриц разных размеров");
+        }
+
+        for (int i = 0; i < getSize()[0]; i++) {
+            for (int j = 0; j < getSize()[1]; j++) {
+                matrixRows[i].setComponent(j, matrixRows[i].getComponent(j) - matrix.matrixRows[i].getComponent(j));
+            }
+        }
+    }
+
+    public static
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

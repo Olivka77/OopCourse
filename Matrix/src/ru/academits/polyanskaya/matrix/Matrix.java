@@ -205,15 +205,14 @@ public class Matrix {
             for (int i = 0; i < getSize()[0]; i++) {
                 vectors[i] = new Vector(1);
 
-                for (int j = 0; j < getSize()[1]; j++) { // цикл j не нужен
-                    for (int k = 0; k < vector.getSize(); k++) {
-                        vectors[i].setComponent(0, vectors[i].getComponent(0) +
-                                matrixRows[i].getComponent(k) * vector.getComponent(k));
-                    }
+                for (int j = 0; j < vector.getSize(); j++) { // по столбцам вектора
+                    vectors[i].setComponent(0, vectors[i].getComponent(0) +
+                            matrixRows[i].getComponent(j) * vector.getComponent(j));
                 }
+
             }
 
-            this.matrixRows = vectors;
+            matrixRows = vectors;
         } else {
             if (getSize()[1] > 1) {
                 throw new IllegalArgumentException("Матрица не является вектором-столбцом: количество столбцов в матрице " +
@@ -227,13 +226,29 @@ public class Matrix {
 
             Vector[] vectors = new Vector[vector.getSize()];
 
+            for (int i = 0; i < vector.getSize(); i++) {
+                vectors[i] = new Vector(vector.getSize());
+            }
+
             for (int i = 0; i < getSize()[0]; i++) {
                 for (int j = 0; j < vector.getSize(); j++) {
                     vectors[i].setComponent(j, matrixRows[i].getComponent(0) * vector.getComponent(j));
                 }
             }
 
-            this.matrixRows = vectors;
+            matrixRows = vectors;
+        }
+    }
+
+    public void add(Matrix matrix) {
+        if (matrix.getSize()[0] != getSize()[0] || matrix.getSize()[1] != getSize()[1]) {
+            throw new IllegalArgumentException("Невозможно сложить матрицы разных размеров");
+        }
+
+        for (int i = 0; i < getSize()[0]; i++) {
+            for (int j = 0; j < getSize()[1]; j++) {
+                matrixRows[i].setComponent(j, matrixRows[i].getComponent(j) + matrix.matrixRows[i].getComponent(j));
+            }
         }
     }
 

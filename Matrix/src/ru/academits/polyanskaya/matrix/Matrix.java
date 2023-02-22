@@ -27,6 +27,7 @@ public class Matrix {
                 maxRowLength = doubles.length;
             }
         }
+
         matrixRows = new Vector[array.length];
 
         for (int i = 0; i < array.length; i++) {
@@ -242,7 +243,7 @@ public class Matrix {
 
     public void add(Matrix matrix) {
         if (matrix.getSize()[0] != getSize()[0] || matrix.getSize()[1] != getSize()[1]) {
-            throw new IllegalArgumentException("Невозможно сложить матрицы разных размеров");
+            throw new IllegalArgumentException("Невозможно получить сумму матриц разных размеров");
         }
 
         for (int i = 0; i < getSize()[0]; i++) {
@@ -264,7 +265,64 @@ public class Matrix {
         }
     }
 
-    public static
+    public static Matrix getSum(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getSize()[0] != matrix2.getSize()[0] || matrix1.getSize()[1] != matrix2.getSize()[1]) {
+            throw new IllegalArgumentException("Невозможно получить сумму матриц разных размеров");
+        }
+
+        Matrix matrixResult = new Matrix(matrix1);
+
+        for (int i = 0; i < matrix1.getSize()[0]; i++) {
+            for (int j = 0; j < matrix1.getSize()[1]; j++) {
+                matrixResult.matrixRows[i].setComponent(j, matrixResult.matrixRows[i].getComponent(j) +
+                        matrix2.matrixRows[i].getComponent(j));
+            }
+        }
+
+        return matrixResult;
+    }
+
+    public static Matrix getDifference(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getSize()[0] != matrix2.getSize()[0] || matrix1.getSize()[1] != matrix2.getSize()[1]) {
+            throw new IllegalArgumentException("Невозможно получить сумму матриц разных размеров");
+        }
+
+        Matrix matrixResult = new Matrix(matrix1);
+
+        for (int i = 0; i < matrix1.getSize()[0]; i++) {
+            for (int j = 0; j < matrix1.getSize()[1]; j++) {
+                matrixResult.matrixRows[i].setComponent(j, matrixResult.matrixRows[i].getComponent(j) -
+                        matrix2.matrixRows[i].getComponent(j));
+            }
+        }
+
+        return matrixResult;
+    }
+
+    public static Matrix getMultiplication(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getSize()[1] != matrix2.getSize()[0]) {
+            throw new IllegalArgumentException("Невозможно получить произведение матриц: " +
+                    "количество строк первой матрицы не соответствует количеству столбцов второй матрицы");
+        }
+
+        int maxSize = Math.max(matrix1.getSize()[0], matrix1.getSize()[1]);
+
+        Matrix matrixResult = new Matrix(maxSize, maxSize);
+
+        for (int i = 0; i < maxSize; i++) {
+            matrixResult.matrixRows[i] = new Vector(maxSize);
+        }
+
+        for (int i = 0; i < maxSize; i++) {
+            for (int j = 0; j < maxSize; j++) {
+                for (int k = 0; k < matrix1.getSize()[1]; k++) {
+                    matrixResult.matrixRows[i].setComponent(j, matrixResult.matrixRows[i].getComponent(j) + matrix1.matrixRows[i].getComponent(k) * matrix2.matrixRows[k].getComponent(j));
+                }
+            }
+        }
+
+        return matrixResult;
+    }
 
     @Override
     public String toString() {

@@ -38,7 +38,7 @@ public class MatrixMain {
         System.out.println(matrix3);
         System.out.println(matrix2);
         System.out.println(matrix4);
-        System.out.println(Arrays.toString(matrix4.getSize())); // Дописать метод для печати размера аналогично вектору?
+        System.out.println(Arrays.toString(matrix4.getSize()));
         System.out.println(matrix4.getVectorRow(1));
 
         matrix4.setVectorRow(1, vector1);
@@ -106,5 +106,24 @@ public class MatrixMain {
 
         matrix9.subtract(matrix10);
         System.out.println(matrix9);
+
+        System.out.println(Matrix.getSum(matrix9, matrix9));
+        System.out.println(Matrix.getDifference(matrix9, matrix10));
+
+        double[][] arrays8 = {
+                {2, 1},
+                {-3, 0},
+                {4, -1}
+        };
+
+        double[][] arrays9 = {
+                {5, -1, 6},
+                {-3, 0, 7}
+        };
+
+        Matrix matrix11 = new Matrix(arrays8);
+        Matrix matrix12 = new Matrix(arrays9);
+
+        System.out.println(Matrix.getMultiplication(matrix11, matrix12));
     }
 }

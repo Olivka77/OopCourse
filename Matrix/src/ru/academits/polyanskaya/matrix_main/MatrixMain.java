@@ -45,7 +45,7 @@ public class MatrixMain {
 
         System.out.println(matrix4);
         System.out.println(matrix5);
-        System.out.println(matrix5.getVectorColumn(0));
+        System.out.println(matrix5.getColumn(0));
 
         matrix5.getTransposition();
         System.out.println(matrix5);

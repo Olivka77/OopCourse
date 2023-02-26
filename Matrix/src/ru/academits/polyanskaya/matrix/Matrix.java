@@ -95,7 +95,7 @@ public class Matrix {
         matrixRows[index] = new Vector(vector);
     }
 
-    public Vector getVectorColumn(int index) {
+    public Vector getColumn(int index) {
         int[] matrixSize = getSize();
 
         if (index > matrixSize[1] - 1) {

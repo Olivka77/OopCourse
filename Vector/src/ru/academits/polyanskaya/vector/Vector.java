@@ -5,12 +5,12 @@ import java.util.Arrays;
 public class Vector {
     private double[] components;
 
-    public Vector(int vectorSize) {
-        if (vectorSize <= 0) {
-            throw new IllegalArgumentException("Размер вектора = " + vectorSize + ", размерность должна быть больше нуля");
+    public Vector(int size) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размер вектора = " + size + ", размерность должна быть больше нуля");
         }
 
-        components = new double[vectorSize];
+        components = new double[size];
     }
 
     public Vector(Vector copy) {
@@ -25,12 +25,12 @@ public class Vector {
         this.components = Arrays.copyOf(components, components.length);
     }
 
-    public Vector(int vectorSize, double[] components) {
-        if (vectorSize <= 0) {
-            throw new IllegalArgumentException("Размер вектора = " + vectorSize + ", размерность должна быть больше нуля");
+    public Vector(int size, double[] components) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размер вектора = " + size + ", размерность должна быть больше нуля");
         }
 
-        this.components = Arrays.copyOf(components, vectorSize);
+        this.components = Arrays.copyOf(components, size);
     }
 
     public int getSize() {
@@ -54,7 +54,7 @@ public class Vector {
 
     public Vector add(Vector vector) {
         if (components.length < vector.components.length) {
-            components = Arrays.copyOf(components, vector.getSize());
+            components = Arrays.copyOf(components, getSize());
         }
 
         for (int i = 0; i < vector.components.length; i++) {

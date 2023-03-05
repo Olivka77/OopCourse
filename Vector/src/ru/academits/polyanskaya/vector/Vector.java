@@ -57,7 +57,7 @@ public class Vector {
             components = Arrays.copyOf(components, vector.components.length);
         }
 
-        for (int i = 0; i < components.length; i++) {
+        for (int i = 0; i < vector.components.length; i++) {
             components[i] += vector.components[i];
         }
 

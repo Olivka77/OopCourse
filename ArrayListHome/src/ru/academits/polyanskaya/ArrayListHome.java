@@ -1,24 +1,22 @@
 package ru.academits.polyanskaya;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class ArrayListHome {
     public static void main(String[] args) {
-        ArrayList<String> list = new ArrayList<>();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("inputArrayListHome.txt"))) {
+            ArrayList<String> arrayList = new ArrayList<>();
 
-        try (Scanner scanner = new Scanner(new FileInputStream("inputArrayListHome.txt"))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+            String line;
 
-                list.add(line);
+            while ((line = bufferedReader.readLine()) != null) {
+                arrayList.add(line);
             }
 
-            System.out.println(list);
-        } catch (FileNotFoundException e) {
+            System.out.println("Список на массиве из прочитанного файла \"inputArrayListHome.txt\": " + arrayList);
+        } catch (IOException e) {
             System.out.println("Не удается найти данный файл");
         }
 
@@ -31,16 +29,17 @@ public class ArrayListHome {
             }
         }
 
-        System.out.println(numbers1);
+        System.out.println("Список на массиве после удаления чётных чисел: " + numbers1);
 
-        ArrayList<Integer> numbers2 = new ArrayList<>();
+        ArrayList<Integer> numbers2 = new ArrayList<>(numbers1);
 
-        for (int i = 0; i < numbers1.size(); i++) {
-            if (numbers1.indexOf(numbers1.get(i)) >= i) {
-                numbers2.add(numbers1.get(i));
+        for (int i = 0; i < numbers2.size(); i++) {
+            if (numbers2.indexOf(numbers2.get(i)) < i) {
+                numbers2.remove(i);
+                i--;
             }
         }
 
-        System.out.println(numbers2);
+        System.out.println("Список на массиве после удаления дубликатов: " + numbers2);
     }
 }

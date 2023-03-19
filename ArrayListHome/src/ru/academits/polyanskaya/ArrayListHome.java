@@ -17,29 +17,29 @@ public class ArrayListHome {
 
             System.out.println("Список на массиве из прочитанного файла \"inputArrayListHome.txt\": " + arrayList);
         } catch (IOException e) {
-            System.out.println("Не удается найти данный файл");
+            System.out.println("Ошибка доступа к указанному файлу");
         }
 
-        ArrayList<Integer> numbers1 = new ArrayList<>(Arrays.asList(4, 4, 1, 5, 7, 1, 3, 5, 4, 4, 4, 4));
+        ArrayList<Integer> numbers = new ArrayList<>(Arrays.asList(4, 4, 1, 5, 7, 1, 3, 5, 4, 4, 4, 4));
 
-        for (int i = 0; i < numbers1.size(); i++) {
-            if (numbers1.get(i) % 2 == 0) {
-                numbers1.remove(i);
+        for (int i = 0; i < numbers.size(); i++) {
+            if (numbers.get(i) % 2 == 0) {
+                numbers.remove(i);
                 i--;
             }
         }
 
-        System.out.println("Список на массиве после удаления чётных чисел: " + numbers1);
+        System.out.println("Список на массиве после удаления чётных чисел: " + numbers);
 
-        ArrayList<Integer> numbers2 = new ArrayList<>(numbers1);
+        ArrayList<Integer> numbersOriginalList = new ArrayList<>(Arrays.asList(1, 5, 7, 1, 1, 7, 3, 5, 1));
+        ArrayList<Integer> numbersResultList = new ArrayList<>(numbersOriginalList.size());
 
-        for (int i = 0; i < numbers2.size(); i++) {
-            if (numbers2.indexOf(numbers2.get(i)) < i) {
-                numbers2.remove(i);
-                i--;
+        for (int i = 0; i < numbersOriginalList.size(); i++) {
+            if (numbersOriginalList.indexOf(numbersOriginalList.get(i)) == i) {
+                numbersResultList.add(numbersOriginalList.get(i));
             }
         }
 
-        System.out.println("Список на массиве после удаления дубликатов: " + numbers2);
+        System.out.println("Список на массиве после удаления дубликатов: " + numbersResultList);
     }
 }

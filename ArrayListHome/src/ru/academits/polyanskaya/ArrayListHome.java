@@ -7,15 +7,17 @@ import java.util.Arrays;
 public class ArrayListHome {
     public static void main(String[] args) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("inputArrayListHome.txt"))) {
-            ArrayList<String> arrayList = new ArrayList<>();
+            ArrayList<String> lines = new ArrayList<>();
 
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                arrayList.add(line);
+                lines.add(line);
             }
 
-            System.out.println("Список на массиве из прочитанного файла \"inputArrayListHome.txt\": " + arrayList);
+            System.out.println("Список на массиве из прочитанного файла \"inputArrayListHome.txt\": " + lines);
+        } catch (FileNotFoundException e) {
+            System.out.println("Указанный файл не найден");
         } catch (IOException e) {
             System.out.println("Ошибка доступа к указанному файлу");
         }
@@ -31,15 +33,15 @@ public class ArrayListHome {
 
         System.out.println("Список на массиве после удаления чётных чисел: " + numbers);
 
-        ArrayList<Integer> numbersOriginalList = new ArrayList<>(Arrays.asList(1, 5, 7, 1, 1, 7, 3, 5, 1));
-        ArrayList<Integer> numbersResultList = new ArrayList<>(numbersOriginalList.size());
+        ArrayList<Integer> repeatedNumbersOriginalList = new ArrayList<>(Arrays.asList(1, 5, 7, 1, 1, 7, 3, 5, 1));
+        ArrayList<Integer> uniqueNumbersResultList = new ArrayList<>(repeatedNumbersOriginalList.size());
 
-        for (int i = 0; i < numbersOriginalList.size(); i++) {
-            if (numbersOriginalList.indexOf(numbersOriginalList.get(i)) == i) {
-                numbersResultList.add(numbersOriginalList.get(i));
+        for (Integer integer : repeatedNumbersOriginalList) {
+            if (!uniqueNumbersResultList.contains(integer)) {
+                uniqueNumbersResultList.add(integer);
             }
         }
 
-        System.out.println("Список на массиве после удаления дубликатов: " + numbersResultList);
+        System.out.println("Список на массиве после удаления дубликатов: " + uniqueNumbersResultList);
     }
 }

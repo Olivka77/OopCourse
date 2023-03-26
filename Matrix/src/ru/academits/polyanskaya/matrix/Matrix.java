@@ -7,8 +7,8 @@ public class Matrix {
 
     public Matrix(int rowsCount, int columnsCount) {
         if (rowsCount < 1 || columnsCount < 1) {
-            throw new IllegalArgumentException("Ошибка создания матрицы с количеством строк: " + rowsCount + " и количеством столбцов: " + columnsCount + ", "
-                    + "размер матрицы должен быть больше 0");
+            throw new IllegalArgumentException("Размер матрицы должен быть больше 0. Текущее количество строк: "
+                    + rowsCount + ", текущее количество столбцов: " + columnsCount);
         }
 
         rows = new Vector[rowsCount];
@@ -23,11 +23,11 @@ public class Matrix {
     }
 
     public Matrix(double[][] array) {
-        int maxRowLength = 0;
-
         if (array.length == 0) {
             throw new IllegalArgumentException("Ошибка создания матрицы размера 0: внешний массив пуст");
         }
+
+        int maxRowLength = 0;
 
         for (double[] row : array) {
             if (row.length > maxRowLength) {
@@ -68,7 +68,7 @@ public class Matrix {
                 components[j] = vectors[i].getComponent(j);
             }
 
-            rows[i] = new Vector(maxVectorSize, components);
+            rows[i] = new Vector(components);
         }
     }
 
@@ -80,21 +80,21 @@ public class Matrix {
         return rows[0].getSize();
     }
 
-    private void checkIndex(int index) {
+    private void checkRowIndex(int index) {
         if (index < 0 || index >= rows.length) {
-            throw new IndexOutOfBoundsException("Индекс: " + index + " за пределами диапазона допустимых значений от 0 до : "
+            throw new IndexOutOfBoundsException("Индекс: " + index + " за пределами диапазона допустимых значений от 0 до "
                     + (rows.length - 1));
         }
     }
 
     public Vector getRow(int index) {
-        checkIndex(index);
+        checkRowIndex(index);
 
         return new Vector(rows[index]);
     }
 
     public void setRow(int index, Vector vector) {
-        checkIndex(index);
+        checkRowIndex(index);
 
         if (vector.getSize() != getColumnsCount()) {
             throw new IllegalArgumentException("Размер переданного вектора: " + vector.getSize()
@@ -105,13 +105,14 @@ public class Matrix {
     }
 
     public Vector getColumn(int index) {
-        int rowsCount = rows.length;
         int columnsCount = getColumnsCount();
 
         if (index < 0 || index >= columnsCount) {
-            throw new IllegalArgumentException("Индекс: " + index + " за пределами диапазона допустимых значений от 0 до : "
+            throw new IndexOutOfBoundsException("Индекс: " + index + " за пределами диапазона допустимых значений от 0 до : "
                     + (columnsCount - 1));
         }
+
+        int rowsCount = rows.length;
 
         Vector vector = new Vector(rowsCount);
 
@@ -235,6 +236,8 @@ public class Matrix {
     }
 
     public static Matrix getSum(Matrix matrix1, Matrix matrix2) {
+        checkSizesEquality(matrix1, matrix2);
+
         Matrix resultMatrix = new Matrix(matrix1);
 
         resultMatrix.add(matrix2);
@@ -243,6 +246,8 @@ public class Matrix {
     }
 
     public static Matrix getDifference(Matrix matrix1, Matrix matrix2) {
+        checkSizesEquality(matrix1, matrix2);
+
         Matrix resultMatrix = new Matrix(matrix1);
 
         resultMatrix.subtract(matrix2);

@@ -1,21 +1,22 @@
 package ru.academits.polyanskaya.csv;
 
 import javax.imageio.IIOException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.io.*;
 
-public class Csv {
+public class CsvToHtml {
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(new FileInputStream("input.csv"));
-             PrintWriter writer = new PrintWriter("output.html")) {
-            writer.print("<html><table>");
+        String inputCsv = args[0];
+        String outputHtml = args[1];
 
-            StringBuilder stringBuilderResult = new StringBuilder();
-            StringBuilder stringBuilderTemp = new StringBuilder();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputCsv));
+             PrintWriter writer = new PrintWriter(outputHtml)) {
+            writer.print("<!DOCTYPE html>" + System.lineSeparator() + "<html lang=\"ru\">" + System.lineSeparator() + "\t<head>"
+                    + System.lineSeparator() + "\t\t<meta charset=\"UTF-8\">" + System.lineSeparator() + "<\t/head>"
+                    + System.lineSeparator() + "\t<body>" + System.lineSeparator() + "\t\t<table>" + System.lineSeparator());
 
-            while (scanner.hasNextLine()) {
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
                 String line = scanner.nextLine();
 
                 String[] details = line.split(",", -1);
@@ -34,18 +35,18 @@ public class Csv {
                         continue;
                     }
 
-                    boolean newLineInDetail = quotesCountInDetail % 2 != 0;
-                    boolean detailStartsWithQuote = details[i].startsWith("\"");
-                    boolean detailEndsWithQuote = details[i].endsWith("\"");
+                    boolean hasNewLineInDetail = quotesCountInDetail % 2 != 0;
+                    boolean isDetailStartsWithQuote = details[i].startsWith("\"");
+                    boolean isDetailEndsWithQuote = details[i].endsWith("\"");
 
-                    if (!(newLineInDetail && detailEndsWithQuote)) {
+                    if (!(hasNewLineInDetail && isDetailEndsWithQuote)) {
                         stringBuilderTemp.append("<td>");
                     }
 
                     stringBuilderTemp.append(details[i]);
 
-                    if (detailStartsWithQuote && detailEndsWithQuote) {
-                        stringBuilderTemp.deleteCharAt(stringBuilderTemp.indexOf("\"")).deleteCharAt(stringBuilderTemp.lastIndexOf("\""));
+                    if (isDetailStartsWithQuote && isDetailEndsWithQuote) {
+                        stringBuilderTemp.deleteCharAt(stringBuilderTemp.indexOf("\"")).deleteCharAt(stringBuilderTemp.lastIndexOf("\"")); // здесь падает
 
                         if (quotesCountInDetail > 3) {
                             for (int j = stringBuilderTemp.length() - 1; j > stringBuilderTemp.length() - details[i].length(); j--) {
@@ -65,14 +66,14 @@ public class Csv {
                         stringBuilderTemp.deleteCharAt(stringBuilderTemp.indexOf("\""));
                     }
 
-                    if (!(newLineInDetail && detailStartsWithQuote)) {
+                    if (!(hasNewLineInDetail && isDetailStartsWithQuote)) {
                         stringBuilderTemp.append("</td>");
                     } else {
                         stringBuilderTemp.append("<br/>");
                     }
 
                     if (i == details.length - 1) {
-                        if (!newLineInDetail || detailEndsWithQuote) {
+                        if (!hasNewLineInDetail || isDetailEndsWithQuote) {
                             stringBuilderTemp.append("</tr>");
                         }
                     }
@@ -81,12 +82,12 @@ public class Csv {
                 }
             }
 
-            writer.print(stringBuilderResult);
-            writer.print("</table></html>");
+            writer.print(line);
+            writer.print("<\t\t/table>" + System.lineSeparator() + "\t</body>" + System.lineSeparator() + "</html>");
         } catch (FileNotFoundException e) {
-            System.out.println("Ошибка: файл не найден");
-        } catch (IIOException e) {
-            System.out.println("Формат файла не соответствует формату csv");
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

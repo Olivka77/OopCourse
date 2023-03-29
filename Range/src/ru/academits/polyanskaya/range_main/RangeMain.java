@@ -13,7 +13,7 @@ public class RangeMain {
 
         Range range2 = new Range(4, 8);
 
-        range2.setFrom(8);
+        range2.setFrom(7);
         range2.setTo(9);
 
         System.out.println("Значение поля from объекта range2 после изменения: " + range2.getFrom());

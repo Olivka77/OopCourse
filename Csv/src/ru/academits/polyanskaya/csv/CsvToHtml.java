@@ -1,101 +1,106 @@
 package ru.academits.polyanskaya.csv;
 
-import javax.imageio.IIOException;
 import java.io.*;
 
 public class CsvToHtml {
     public static void main(String[] args) {
-        String inputCsv = args[0];
+        /*String inputCsv = args[0];
         String outputHtml = args[1];
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputCsv));
-             PrintWriter writer = new PrintWriter(outputHtml)) {
+             PrintWriter writer = new PrintWriter(outputHtml)) {*/
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("input.csv"));
+             PrintWriter writer = new PrintWriter("output.html")) {
             writer.print("<!DOCTYPE html>" + System.lineSeparator() + "<html lang=\"ru\">" + System.lineSeparator() + "\t<head>"
-                    + System.lineSeparator() + "\t\t<meta charset=\"UTF-8\">" + System.lineSeparator() + "<\t/head>"
+                    + System.lineSeparator() + "\t\t<meta charset=\"UTF-8\">" + System.lineSeparator() + "\t</head>"
                     + System.lineSeparator() + "\t<body>" + System.lineSeparator() + "\t\t<table>" + System.lineSeparator());
 
             String line;
 
+            boolean isNewLineInDetail = false;
+
             while ((line = bufferedReader.readLine()) != null) {
-                String line = scanner.nextLine();
-
-                String[] details = line.split(",", -1);
-
-                if (getQuotesCount(details[0]) % 2 == 0) {
-                    stringBuilderResult.append("<tr>");
+                if (!isNewLineInDetail) {
+                    writer.print("\t\t\t<tr>");
                 }
 
-                for (int i = 0; i < details.length; i++) {
-                    stringBuilderTemp.delete(0, stringBuilderTemp.length());
+                boolean isDetailInQuotes = false;
 
-                    int quotesCountInDetail = getQuotesCount(details[i]);
+                char[] lineToChars = line.toCharArray();
 
-                    if (details[i].length() == 0) {
-                        stringBuilderResult.append("<td></td>");
-                        continue;
-                    }
+                if (line.length() == 0 && !isNewLineInDetail) {
+                    throw new Exception("ошибка формата входного файла");
+                }
 
-                    boolean hasNewLineInDetail = quotesCountInDetail % 2 != 0;
-                    boolean isDetailStartsWithQuote = details[i].startsWith("\"");
-                    boolean isDetailEndsWithQuote = details[i].endsWith("\"");
+                if (!isNewLineInDetail) {
+                    writer.print(System.lineSeparator() + "\t\t\t\t<td>");
+                }
 
-                    if (!(hasNewLineInDetail && isDetailEndsWithQuote)) {
-                        stringBuilderTemp.append("<td>");
-                    }
+                for (int i = 0; i < lineToChars.length; i++) {
+                    if (lineToChars[i] != ',' && lineToChars[i] != '"') {
+                        writer.print(lineToChars[i]);
+                        if (lineToChars[i] == '<') {
+                            writer.print("&lt;");
+                        } else if (lineToChars[i] == '>') {
+                            writer.print("&gt;");
+                        } else if (lineToChars[i] == '&') {
+                            writer.print("&amp;");
+                        }
+                    } else {
+                        if (lineToChars[i] == ',' && !isDetailInQuotes) {
+                            if (isNewLineInDetail) {
+                                writer.print("\t\t\t\t</td>");
 
-                    stringBuilderTemp.append(details[i]);
-
-                    if (isDetailStartsWithQuote && isDetailEndsWithQuote) {
-                        stringBuilderTemp.deleteCharAt(stringBuilderTemp.indexOf("\"")).deleteCharAt(stringBuilderTemp.lastIndexOf("\"")); // здесь падает
-
-                        if (quotesCountInDetail > 3) {
-                            for (int j = stringBuilderTemp.length() - 1; j > stringBuilderTemp.length() - details[i].length(); j--) {
-                                if (stringBuilderTemp.charAt(j) == '"') {
-                                    if (stringBuilderTemp.charAt(j - 1) != '"') {
-                                        throw new IIOException("Формат файла не соответствует csv");
-                                    }
-
-                                    stringBuilderTemp.deleteCharAt(j);
-                                    j--;
-                                }
+                                isNewLineInDetail = false;
+                            } else {
+                                writer.print("</td>");
+                                writer.print(System.lineSeparator() + "\t\t\t\t<td>");
                             }
                         }
                     }
 
-                    if (quotesCountInDetail == 1) {
-                        stringBuilderTemp.deleteCharAt(stringBuilderTemp.indexOf("\""));
-                    }
+                    if (lineToChars[i] == '"') {
+                        isDetailInQuotes = !isDetailInQuotes;
 
-                    if (!(hasNewLineInDetail && isDetailStartsWithQuote)) {
-                        stringBuilderTemp.append("</td>");
-                    } else {
-                        stringBuilderTemp.append("<br/>");
-                    }
+                        if (getQuotesCount(lineToChars, i) % 2 != 0) {
+                            isNewLineInDetail = true;
+                        }
 
-                    if (i == details.length - 1) {
-                        if (!hasNewLineInDetail || isDetailEndsWithQuote) {
-                            stringBuilderTemp.append("</tr>");
+                        int currentQuotesCount = 0;
+
+                        while (lineToChars[i] == 'i') {
+                            currentQuotesCount++;
+
+                            if (currentQuotesCount % 2 == 0) {
+                                writer.print('"');
+                            }
+
+                            i++;
                         }
                     }
+                }
 
-                    stringBuilderResult.append(stringBuilderTemp);
+                if (!isNewLineInDetail) {
+                    writer.print("</td>");
+                    writer.println(System.lineSeparator() + "\t\t\t</tr>");
+                } else {
+                    writer.print("<br/>");
+                    isNewLineInDetail = false;
                 }
             }
-
-            writer.print(line);
-            writer.print("<\t\t/table>" + System.lineSeparator() + "\t</body>" + System.lineSeparator() + "</html>");
+            writer.print("\t\t</table>" + System.lineSeparator() + "\t</body>" + System.lineSeparator() + "</html>");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static int getQuotesCount(String detail) {
+    public static int getQuotesCount(char[] chars, int startIndex) {
         int quotesCount = 0;
 
-        for (int i = 0; i < detail.length(); i++) {
-            if (detail.charAt(i) == '"') {
+        for (int i = startIndex; i < chars.length; i++) {
+            if (chars[i] == '"') {
                 quotesCount++;
             }
         }

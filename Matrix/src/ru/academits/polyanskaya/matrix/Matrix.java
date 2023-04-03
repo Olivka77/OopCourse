@@ -24,7 +24,7 @@ public class Matrix {
 
     public Matrix(double[][] array) {
         if (array.length == 0) {
-            throw new IllegalArgumentException("Ошибка создания матрицы размера 0: внешний массив пуст");
+            throw new IllegalArgumentException("Внешний массив пуст");
         }
 
         int maxRowLength = 0;
@@ -36,7 +36,7 @@ public class Matrix {
         }
 
         if (maxRowLength == 0) {
-            throw new IllegalArgumentException("Ошибка создания матрицы размера 0: внешний массив содержит только пустые вложенные массивы");
+            throw new IllegalArgumentException("Внешний массив содержит только пустые вложенные массивы");
         }
 
         rows = new Vector[array.length];
@@ -48,7 +48,7 @@ public class Matrix {
 
     public Matrix(Vector[] vectors) {
         if (vectors.length == 0) {
-            throw new IllegalArgumentException("Ошибка создания матрицы: длина массива должна быть больше 0");
+            throw new IllegalArgumentException("Длина массива должна быть больше 0");
         }
 
         rows = new Vector[vectors.length];
@@ -82,7 +82,7 @@ public class Matrix {
 
     private void checkRowIndex(int index) {
         if (index < 0 || index >= rows.length) {
-            throw new IndexOutOfBoundsException("Индекс: " + index + " за пределами диапазона допустимых значений от 0 до "
+            throw new IndexOutOfBoundsException("Индекс строки: " + index + " за пределами диапазона допустимых значений от 0 до "
                     + (rows.length - 1));
         }
     }
@@ -108,7 +108,7 @@ public class Matrix {
         int columnsCount = getColumnsCount();
 
         if (index < 0 || index >= columnsCount) {
-            throw new IndexOutOfBoundsException("Индекс: " + index + " за пределами диапазона допустимых значений от 0 до : "
+            throw new IndexOutOfBoundsException("Индекс столбца: " + index + " за пределами диапазона допустимых значений от 0 до "
                     + (columnsCount - 1));
         }
 

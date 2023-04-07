@@ -4,55 +4,47 @@ import java.util.NoSuchElementException;
 
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
-    private int count;
+    private int size;
 
     public SinglyLinkedList() {
-        head = null;
     }
 
     @Override
     public String toString() {
-        if (head == null) {
-            throw new NoSuchElementException("Ошибка печати элементов пустого списка");
-        }
-
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (ListItem<T> p = head; p != null; p = p.getNext()) {
-            stringBuilder.append(p.getData()).append(", ");
+        stringBuilder.append('[');
+
+        for (ListItem<T> position = head; position != null; position = position.getNext()) {
+            stringBuilder.append(position.getData()).append(", ");
         }
 
-        return (stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length())).toString();
+        if (head != null) {
+            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+        }
+
+        return stringBuilder.append(']').toString();
     }
 
-    public void addItemToTop(T data) {
-        if (head == null) {
-            head = new ListItem<>(data, null);
-        } else {
-            head = new ListItem<>(data, head);
-        }
+    public void addFirst(T data) {
+        head = new ListItem<>(data, head);
 
-        count++;
+        size++;
     }
 
     public int getSize() {
-        return count;
+        return size;
     }
 
-    public T getFirstItemData() {
+    public T getFirst() {
         if (head == null) {
-            throw new NoSuchElementException("Ошибка доступа к первому элементу в пустом списке");
+            throw new NoSuchElementException("Первый элемент отсутствует - список пуст");
         }
 
         return head.getData();
     }
 
     private ListItem<T> getItem(int index) {
-        if (index > count - 1 || index < 0) {
-            throw new IndexOutOfBoundsException("Ошибка: индекс " + index + " за пределами диапазона допустимых значений "
-                    + "от 0 до " + (count - 1));
-        }
-
         ListItem<T> item = head;
 
         for (int i = 0; i < index; i++) {
@@ -62,63 +54,73 @@ public class SinglyLinkedList<T> {
         return item;
     }
 
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Индекс " + index + " за пределами диапазона допустимых значений "
+                    + "от 0 до " + (size - 1));
+        }
+    }
+
     public T getDataByIndex(int index) {
+        checkIndex(index);
+
         return getItem(index).getData();
     }
 
     public T setDataByIndex(int index, T data) {
-        T oldData = getItem(index).getData();
+        checkIndex(index);
 
-        getItem(index).setData(data);
+        ListItem<T> item = getItem(index);
+
+        T oldData = item.getData();
+
+        item.setData(data);
 
         return oldData;
     }
 
-    public T deleteItemByIndex(int index) {
+    public T deleteByIndex(int index) {
         if (index == 0) {
-            T dataToDelete = getDataByIndex(0);
-            head = head.getNext();
-
-            count--;
-
-            return dataToDelete;
+            return deleteFirst();
         }
 
-        ListItem<T> itemBeforeItemToDelete = getItem(index - 1);
-        T dataToDelete = itemBeforeItemToDelete.getNext().getData();
-        itemBeforeItemToDelete.setNext(itemBeforeItemToDelete.getNext().getNext());
+        checkIndex(index);
 
-        count--;
+        ListItem<T> previousItem = getItem(index - 1);
+        T deletedData = previousItem.getNext().getData();
+        previousItem.setNext(previousItem.getNext().getNext());
 
-        return dataToDelete;
+        size--;
+
+        return deletedData;
     }
 
-    public void insertItem(int index, T data) {
+    public void insert(int index, T data) {
         if (index == 0) {
-            addItemToTop(data);
+            addFirst(data);
 
             return;
         }
 
-        if (index == count) {
-            count++;
-            getItem(index - 1).setNext(new ListItem<>(data, null));
+        checkIndex(index - 1);
 
-            return;
-        }
+        ListItem<T> item = getItem(index - 1);
 
-        getItem(index - 1).setNext(new ListItem<>(data, getItem(index)));
-        count++;
+        item.setNext(new ListItem<>(data, item.getNext()));
+
+        size++;
     }
 
-    public boolean deleteItemByData(T data) {
-        ListItem<T> item = new ListItem<>(data, head);
+    public boolean deleteByData(T data) {
+        for (ListItem<T> position = head, previousItem = null; position != null; previousItem = position, position = position.getNext()) {
+            if (position.getData().equals(data)) {
+                if (previousItem == null) {
+                    head = head.getNext();
+                } else {
+                    previousItem.setNext(position.getNext());
+                }
 
-        for (int i = 0; i < count; i++) {
-            item = item.getNext();
-
-            if (item.getData().equals(data)) {
-                deleteItemByIndex(i);
+                size--;
 
                 return true;
             }
@@ -127,15 +129,20 @@ public class SinglyLinkedList<T> {
         return false;
     }
 
-    public T deleteFirstElement() {
-        return deleteItemByIndex(0);
+
+    public T deleteFirst() {
+        T dataToDelete = getFirst();
+        head = head.getNext();
+
+        size--;
+
+        return dataToDelete;
     }
 
-    public void listReversal() {
+    public void reverse() {
         ListItem<T> previousItem = null;
-        ListItem<T> nextItem;
 
-        for (ListItem<T> currentItem = head; currentItem != null; currentItem = nextItem) {
+        for (ListItem<T> currentItem = head, nextItem; currentItem != null; currentItem = nextItem) {
             nextItem = currentItem.getNext();
             currentItem.setNext(previousItem);
             previousItem = currentItem;
@@ -160,7 +167,7 @@ public class SinglyLinkedList<T> {
             newCurrentItem = newItem;
         }
 
-        resultList.count = count;
+        resultList.size = size;
         resultList.head = newHead;
 
         return resultList;

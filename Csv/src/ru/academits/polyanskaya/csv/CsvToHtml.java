@@ -18,36 +18,56 @@ public class CsvToHtml {
             String line;
 
             boolean isNewLineInDetail = false;
+            boolean isDetailInQuotes = false;
+            boolean isNewDetail = false;
 
             while ((line = bufferedReader.readLine()) != null) {
                 if (!isNewLineInDetail) {
-                    writer.print("\t\t\t<tr>");
+                    writer.println("\t\t\t<tr>");
+                    writer.print("\t\t\t\t<td>");
+
+                    isNewDetail = true;
                 }
 
-                boolean isDetailInQuotes = false;
-
-                char[] lineToChars = line.toCharArray();
+                char[] chars = line.toCharArray();
 
                 if (line.length() == 0 && !isNewLineInDetail) {
                     throw new Exception("ошибка формата входного файла");
                 }
 
-                if (!isNewLineInDetail) {
-                    writer.print(System.lineSeparator() + "\t\t\t\t<td>");
-                }
-
-                for (int i = 0; i < lineToChars.length; i++) {
-                    if (lineToChars[i] != ',' && lineToChars[i] != '"') {
-                        writer.print(lineToChars[i]);
-                        if (lineToChars[i] == '<') {
-                            writer.print("&lt;");
-                        } else if (lineToChars[i] == '>') {
-                            writer.print("&gt;");
-                        } else if (lineToChars[i] == '&') {
-                            writer.print("&amp;");
-                        }
+                for (int i = 0; i < chars.length; i++) {
+                    if (chars[i] == '<') {
+                        writer.print("&lt;");
+                    } else if (chars[i] == '>') {
+                        writer.print("&gt;");
+                    } else if (chars[i] == '&') {
+                        writer.print("&amp;");
+                    } else if ((chars[i] != ',' && chars[i] != '"') || (chars[i] == '"' && isDetailInQuotes) || (chars[i] == ',' && isNewDetail)) {
+                        writer.print(chars[i]);
                     } else {
-                        if (lineToChars[i] == ',' && !isDetailInQuotes) {
+                        if (chars[i] == '"') {
+                            isDetailInQuotes = !isDetailInQuotes;
+
+                            if (getQuotesCount(chars, i) % 2 != 0) {
+                                //isNewLineInDetail = true;
+                            }
+
+                            int currentQuotesCount = 0;
+
+                            while (chars[i] == 'i') {
+                                currentQuotesCount++;
+
+                                if (currentQuotesCount % 2 == 0) {
+                                    writer.print('\"');
+                                }
+
+                                i++;
+                            }
+                        }
+
+                        if (chars[i] == ',' ) {
+                            isNewDetail = !isNewDetail;
+
                             if (isNewLineInDetail) {
                                 writer.print("\t\t\t\t</td>");
 
@@ -59,25 +79,7 @@ public class CsvToHtml {
                         }
                     }
 
-                    if (lineToChars[i] == '"') {
-                        isDetailInQuotes = !isDetailInQuotes;
 
-                        if (getQuotesCount(lineToChars, i) % 2 != 0) {
-                            isNewLineInDetail = true;
-                        }
-
-                        int currentQuotesCount = 0;
-
-                        while (lineToChars[i] == 'i') {
-                            currentQuotesCount++;
-
-                            if (currentQuotesCount % 2 == 0) {
-                                writer.print('"');
-                            }
-
-                            i++;
-                        }
-                    }
                 }
 
                 if (!isNewLineInDetail) {
@@ -89,11 +91,14 @@ public class CsvToHtml {
                 }
             }
             writer.print("\t\t</table>" + System.lineSeparator() + "\t</body>" + System.lineSeparator() + "</html>");
-        } catch (FileNotFoundException e) {
+        } catch (
+                FileNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public static int getQuotesCount(char[] chars, int startIndex) {

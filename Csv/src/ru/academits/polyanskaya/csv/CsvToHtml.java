@@ -25,9 +25,9 @@ public class CsvToHtml {
                 if (!isNewLineInDetail) {
                     writer.println("\t\t\t<tr>");
                     writer.print("\t\t\t\t<td>");
-
-                    isNewDetail = true;
                 }
+
+                isNewLineInDetail = false;
 
                 char[] chars = line.toCharArray();
 
@@ -36,58 +36,44 @@ public class CsvToHtml {
                 }
 
                 for (int i = 0; i < chars.length; i++) {
+                    isDetailInQuotes = false;
                     if (chars[i] == '<') {
                         writer.print("&lt;");
                     } else if (chars[i] == '>') {
                         writer.print("&gt;");
                     } else if (chars[i] == '&') {
                         writer.print("&amp;");
-                    } else if ((chars[i] != ',' && chars[i] != '"') || (chars[i] == '"' && isDetailInQuotes) || (chars[i] == ',' && isNewDetail)) {
+                    } else if ((chars[i] != ',' && chars[i] != '"') || (chars[i] == '"' && isDetailInQuotes) || (chars[i] == ',' && isDetailInQuotes)) {
                         writer.print(chars[i]);
                     } else {
                         if (chars[i] == '"') {
                             isDetailInQuotes = !isDetailInQuotes;
+                            isNewDetail = !isNewDetail;
+                        }
 
-                            if (getQuotesCount(chars, i) % 2 != 0) {
-                                //isNewLineInDetail = true;
-                            }
-
-                            int currentQuotesCount = 0;
-
-                            while (chars[i] == 'i') {
-                                currentQuotesCount++;
-
-                                if (currentQuotesCount % 2 == 0) {
-                                    writer.print('\"');
-                                }
-
-                                i++;
-                            }
+                        if (isDetailInQuotes && isNewDetail) {
+                            isNewLineInDetail = true;
+                            System.out.println("1");
                         }
 
                         if (chars[i] == ',' ) {
-                            isNewDetail = !isNewDetail;
-
-                            if (isNewLineInDetail) {
+                            if (isNewDetail) {
                                 writer.print("\t\t\t\t</td>");
 
-                                isNewLineInDetail = false;
+                                isNewDetail = !isNewDetail;
                             } else {
                                 writer.print("</td>");
                                 writer.print(System.lineSeparator() + "\t\t\t\t<td>");
                             }
                         }
                     }
-
-
                 }
 
-                if (!isNewLineInDetail) {
+                if (!isNewLineInDetail) { // дописать условие, чтобы не срабатывало после последней ячейки в кавычках
                     writer.print("</td>");
                     writer.println(System.lineSeparator() + "\t\t\t</tr>");
                 } else {
                     writer.print("<br/>");
-                    isNewLineInDetail = false;
                 }
             }
             writer.print("\t\t</table>" + System.lineSeparator() + "\t</body>" + System.lineSeparator() + "</html>");

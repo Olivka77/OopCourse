@@ -1,4 +1,4 @@
-package ru.academits.polyanskaya.list_main;
+package ru.academits.polyanskaya.singly_linked_list_main;
 
 import ru.academits.polyanskaya.singly_linked_list.SinglyLinkedList;
 
@@ -16,8 +16,8 @@ public class SinglyLinkedListMain {
         System.out.println("Список: " + list);
         System.out.println("Значение первого элемент списка: " + list.getFirst());
         System.out.println("Размер списка: " + list.getSize());
-        System.out.println("Значение по индексу 1: " + list.getDataByIndex(1));
-        System.out.println("Замена значения по индексу 1 на 321, старое значение: " + list.setDataByIndex(1, 321));
+        System.out.println("Значение по индексу 1: " + list.getByIndex(1));
+        System.out.println("Замена значения по индексу 1 на 321, старое значение: " + list.setByIndex(1, 321));
         System.out.println("Список после изменения: " + list);
         System.out.println("Удаление первого элемента списка, старое значение: " + list.deleteByIndex(0));
         System.out.println("Список после изменения: " + list);
@@ -40,7 +40,7 @@ public class SinglyLinkedListMain {
 
         System.out.println("Копия списка: " + listCopy);
 
-        list.setDataByIndex(0, 100);
+        list.setByIndex(0, 100);
 
         System.out.println("Исходный список после изменения первого элемента: " + list);
         System.out.println("Копия списка после изменения первого элемента в исходном списке: " + listCopy);

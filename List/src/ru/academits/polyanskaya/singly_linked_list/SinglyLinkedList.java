@@ -11,17 +11,19 @@ public class SinglyLinkedList<T> {
 
     @Override
     public String toString() {
+        if (head == null) {
+            return "[]";
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append('[');
 
-        for (ListItem<T> position = head; position != null; position = position.getNext()) {
-            stringBuilder.append(position.getData()).append(", ");
+        for (ListItem<T> currentItem = head; currentItem != null; currentItem = currentItem.getNext()) {
+            stringBuilder.append(currentItem.getData()).append(", ");
         }
 
-        if (head != null) {
-            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        }
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
 
         return stringBuilder.append(']').toString();
     }
@@ -55,36 +57,38 @@ public class SinglyLinkedList<T> {
     }
 
     private void checkIndex(int index) {
+        if (head == null) {
+            throw new IndexOutOfBoundsException("Индекс " + index + " отсутствует, список пуст");
+        }
+
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Индекс " + index + " за пределами диапазона допустимых значений "
                     + "от 0 до " + (size - 1));
         }
     }
 
-    public T getDataByIndex(int index) {
+    public T getByIndex(int index) {
         checkIndex(index);
 
         return getItem(index).getData();
     }
 
-    public T setDataByIndex(int index, T data) {
+    public T setByIndex(int index, T data) {
         checkIndex(index);
 
         ListItem<T> item = getItem(index);
-
         T oldData = item.getData();
-
         item.setData(data);
 
         return oldData;
     }
 
     public T deleteByIndex(int index) {
+        checkIndex(index);
+
         if (index == 0) {
             return deleteFirst();
         }
-
-        checkIndex(index);
 
         ListItem<T> previousItem = getItem(index - 1);
         T deletedData = previousItem.getNext().getData();
@@ -96,28 +100,33 @@ public class SinglyLinkedList<T> {
     }
 
     public void insert(int index, T data) {
+        if (index != size || head == null) {
+            checkIndex(index);
+        }
+
         if (index == 0) {
             addFirst(data);
 
             return;
         }
 
-        checkIndex(index - 1);
-
         ListItem<T> item = getItem(index - 1);
-
         item.setNext(new ListItem<>(data, item.getNext()));
 
         size++;
     }
 
     public boolean deleteByData(T data) {
-        for (ListItem<T> position = head, previousItem = null; position != null; previousItem = position, position = position.getNext()) {
-            if (position.getData().equals(data)) {
+        if (data == null) {
+            return false;
+        }
+
+        for (ListItem<T> currentItem = head, previousItem = null; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
+            if (currentItem.getData().equals(data)) {
                 if (previousItem == null) {
                     head = head.getNext();
                 } else {
-                    previousItem.setNext(position.getNext());
+                    previousItem.setNext(currentItem.getNext());
                 }
 
                 size--;
@@ -129,14 +138,13 @@ public class SinglyLinkedList<T> {
         return false;
     }
 
-
     public T deleteFirst() {
-        T dataToDelete = getFirst();
+        T deletedData = getFirst();
         head = head.getNext();
 
         size--;
 
-        return dataToDelete;
+        return deletedData;
     }
 
     public void reverse() {

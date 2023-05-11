@@ -30,7 +30,6 @@ public class SinglyLinkedList<T> {
 
     public void addFirst(T data) {
         head = new ListItem<>(data, head);
-
         size++;
     }
 
@@ -100,8 +99,9 @@ public class SinglyLinkedList<T> {
     }
 
     public void insert(int index, T data) {
-        if (index != size || head == null) {
-            checkIndex(index);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Индекс " + index + " за пределами диапазона допустимых значений "
+                    + "от 0 до " + (size));
         }
 
         if (index == 0) {
@@ -117,16 +117,20 @@ public class SinglyLinkedList<T> {
     }
 
     public boolean deleteByData(T data) {
-        if (data == null) {
+        if (head == null) {
             return false;
         }
 
         for (ListItem<T> currentItem = head, previousItem = null; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
-            if (currentItem.getData().equals(data)) {
+            if (data == null && currentItem.getData() == null || data != null && data.equals(currentItem.getData())) {
                 if (previousItem == null) {
                     head = head.getNext();
                 } else {
-                    previousItem.setNext(currentItem.getNext());
+                    if (currentItem.getNext() == null) {
+                        previousItem.setNext(null);
+                    } else {
+                        previousItem.setNext(currentItem.getNext());
+                    }
                 }
 
                 size--;

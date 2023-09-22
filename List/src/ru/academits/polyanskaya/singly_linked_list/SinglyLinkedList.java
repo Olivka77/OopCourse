@@ -1,6 +1,7 @@
 package ru.academits.polyanskaya.singly_linked_list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
@@ -101,7 +102,7 @@ public class SinglyLinkedList<T> {
     public void insert(int index, T data) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Индекс " + index + " за пределами диапазона допустимых значений "
-                    + "от 0 до " + (size));
+                    + "от 0 до " + size);
         }
 
         if (index == 0) {
@@ -122,15 +123,11 @@ public class SinglyLinkedList<T> {
         }
 
         for (ListItem<T> currentItem = head, previousItem = null; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
-            if (data == null && currentItem.getData() == null || data != null && data.equals(currentItem.getData())) {
+            if (Objects.equals(data, currentItem.getData())) {
                 if (previousItem == null) {
                     head = head.getNext();
                 } else {
-                    if (currentItem.getNext() == null) {
-                        previousItem.setNext(null);
-                    } else {
-                        previousItem.setNext(currentItem.getNext());
-                    }
+                    previousItem.setNext(currentItem.getNext());
                 }
 
                 size--;

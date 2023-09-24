@@ -25,8 +25,13 @@ public class ArrayList<E> implements List<E> {
         checkCapacity(capacity);
 
         if (items.length < capacity) {
-            items = Arrays.copyOf(items, capacity * 2);
+            items = Arrays.copyOf(items, capacity);
+            //items = Arrays.copyOf(items, capacity * 2);
         }
+    }
+
+    private void increaseCapacity() { // будет ли работать с вместимостью 0? чекиндекс вроде не нужен
+        items = Arrays.copyOf(items, size * 2);
     }
 
     private void checkIndex(int index) {
